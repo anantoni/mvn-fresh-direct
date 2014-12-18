@@ -215,7 +215,7 @@ public class DatabaseManager {
     }
     
     public UserProfile getProfileData(int user_id) throws SQLException {
-        PreparedStatement s = SQLcon.prepareStatement("SELECT * FROM fd_schema.FULL_USER_PROFILE WHERE User_ID = ?");
+        PreparedStatement s = SQLcon.prepareStatement("SELECT * FROM FULL_USER_PROFILE WHERE user_id = ?");
         s.setInt(1, user_id);
         s.executeQuery();
 
@@ -295,8 +295,9 @@ public class DatabaseManager {
         return productsList;
     }
     
-    public boolean checkout(UserProfile userProfile, String[] pIDs, String[] pQuantities, int totalCost) throws SQLException {
+    public boolean checkout(UserProfile userProfile, String[] pIDs, String[] pQuantities, String[] pListPrices, int totalCost) throws SQLException {
         int userID = userProfile.getUserID();
+        int orderID = -1;
         SQLcon.setAutoCommit(false);
         PreparedStatement s = SQLcon.prepareStatement("SELECT credit_limit, current_balance FROM USERS WHERE user_id = ?");
         s.setInt(1, userID);
@@ -305,36 +306,77 @@ public class DatabaseManager {
         if (rs.next()) {
             int creditLimit = rs.getInt("credit_limit");
             int currentBalance = rs.getInt("current_balance");
+            rs.close();
+            s.close();
+            
             if (currentBalance + totalCost <= creditLimit) {
                 s = SQLcon.prepareStatement("UPDATE USERS SET current_balance = ? WHERE user_id = ?");
                 s.setInt(1, currentBalance + totalCost);
                 s.setInt(2, userID);
                 s.executeUpdate();
+                
+                s = SQLcon.prepareStatement("INSERT INTO ORDERS(order_date, customer_id, total_cost) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                s.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+                s.setInt(2, userID);
+                s.setInt(3, totalCost);
+                s.executeUpdate();
+                rs = s.getGeneratedKeys();
+
+                if (rs.next()) {
+                    orderID = rs.getInt(1);
+                    rs.close();
+                    s.close();
+                } else {
+                    rs.close();
+                    s.close();
+                    return false;
+                }
             }
-            else
+            else {
+                rs.close();
+                s.close();
                 return false;
+            }
         }
         
         for (int i = 0; i < pIDs.length; i++) {
             int productID = Integer.parseInt(pIDs[i]);
             int productQuantity = Integer.parseInt(pQuantities[i]);
-            s = SQLcon.prepareStatement("SELECT available_quantity FROM PRODUCTS WHERE product_id = ?");
+            int productPrice = Integer.parseInt(pListPrices[i]);
+            s = SQLcon.prepareStatement("SELECT available_quantity, procurement_level FROM PRODUCTS WHERE product_id = ?");
             s.setInt(1, productID);
             rs = s.executeQuery();
             
             if (rs.next()) {
                 int availableQuantity = rs.getInt("available_quantity");
+                int procurementLevel = rs.getInt("procurement_level");
                 if (productQuantity <= availableQuantity) {
-                    s = SQLcon.prepareStatement("UPDATE PRODUCTS SET available_quantity = ? WHERE product_id = ?");
+                    if (availableQuantity - productQuantity <= procurementLevel)
+                        s = SQLcon.prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 1 WHERE product_id = ?");
+                    else
+                        s = SQLcon.prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 0 WHERE product_id = ?");
                     s.setInt(1, availableQuantity - productQuantity);
                     s.setInt(2, productID);
                     s.executeUpdate();
+                    
+                    s = SQLcon.prepareStatement("INSERT INTO ORDER_DETAILS(order_id, product_id, order_quantity, order_sum) VALUES(?, ?, ?, ?)");
+                    s.setInt(1, orderID);
+                    s.setInt(2, productID);
+                    s.setInt(3, productQuantity);
+                    s.setInt(4, productQuantity * productPrice);
+                    s.executeUpdate();
                 }
-                else 
-                    return false;                
+                else {
+                    rs.close();
+                    s.close();
+                    return false;
+                }                
             }
-            else
+            else {
+                rs.close();
+                s.close();
                 return false;
+            }
         }
         SQLcon.commit();
         return true;

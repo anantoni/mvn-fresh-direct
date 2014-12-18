@@ -52,7 +52,7 @@ public class CheckoutServlet extends HttpServlet {
             DatabaseManager dbManager = new DatabaseManager();
             int totalCost = cart.getTotalCost();
             
-            if (dbManager.checkout(userProfile, pIDs, pQuantities, totalCost)) {
+            if (dbManager.checkout(userProfile, pIDs, pQuantities, pListPrices, totalCost)) {
                 session.setAttribute("shoppingCart", new Cart());
                 String redirectURL = response.encodeRedirectURL("user_profile.html");
                 response.sendRedirect(redirectURL);
