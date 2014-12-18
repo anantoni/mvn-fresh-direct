@@ -224,6 +224,7 @@ public class DatabaseManager {
 
         if (rs.next()) {
             userProfile = new UserProfile();
+            userProfile.setUserID(rs.getInt("user_id"));
             userProfile.setUsername(rs.getString("login_name"));
             userProfile.setFirstname(rs.getString("first_name"));
             userProfile.setLastname(rs.getString("last_name"));
@@ -241,19 +242,30 @@ public class DatabaseManager {
 	
     }
     
-    public int login(String username, String password) throws SQLException {
-        int user_id = -1;
+    public UserProfile login(String username, String password) throws SQLException {
+        UserProfile userProfile = null;
 
-        PreparedStatement s = SQLcon.prepareStatement("SELECT user_id FROM USERS WHERE login_name = ? AND password = ?");
+        PreparedStatement s = SQLcon.prepareStatement("SELECT * FROM FULL_USER_PROFILE WHERE login_name = ? AND password = ?");
         s.setString(1, username);
         s.setString(2, password);
         ResultSet rs = s.executeQuery();
 
         if (rs.next()) {
-            user_id = rs.getInt("user_id");
+            userProfile = new UserProfile();
+            userProfile.setUserID(rs.getInt("user_id"));
+            userProfile.setUsername(rs.getString("login_name"));
+            userProfile.setFirstname(rs.getString("first_name"));
+            userProfile.setLastname(rs.getString("last_name"));
+            userProfile.setEmail(rs.getString("email"));
+            userProfile.setCreditLimit(rs.getInt("credit_limit"));
+            userProfile.setCurrentBalance(rs.getInt("current_balance"));
+            userProfile.setTown(rs.getString("town_name"));
+            userProfile.setStreet(rs.getString("street_name"));
+            userProfile.setStreetNumber(rs.getInt("street_number"));
+            userProfile.setPostCode(rs.getInt("post_code"));
             s.close();
         }
-        return user_id;
+        return userProfile;
 
     }
     
@@ -274,13 +286,58 @@ public class DatabaseManager {
             product.setName(rs.getString("name"));
             product.setDescription(rs.getString("description"));
             product.setProductGroup(rs.getString("product_group").charAt(0));
-            product.setListPrice(rs.getDouble("list_price"));
+            product.setListPrice(rs.getInt("list_price"));
             product.setAvailableQuantity(rs.getInt("available_quantity"));
             product.setProcurementLevel(rs.getInt("procurement_level"));
             product.setProcurementQuantity(rs.getInt("procurement_quantity"));
             productsList.add(product);
         }
         return productsList;
+    }
+    
+    public boolean checkout(UserProfile userProfile, String[] pIDs, String[] pQuantities, int totalCost) throws SQLException {
+        int userID = userProfile.getUserID();
+        SQLcon.setAutoCommit(false);
+        PreparedStatement s = SQLcon.prepareStatement("SELECT credit_limit, current_balance FROM USERS WHERE user_id = ?");
+        s.setInt(1, userID);
+        ResultSet rs = s.executeQuery();
+              
+        if (rs.next()) {
+            int creditLimit = rs.getInt("credit_limit");
+            int currentBalance = rs.getInt("current_balance");
+            if (currentBalance + totalCost <= creditLimit) {
+                s = SQLcon.prepareStatement("UPDATE USERS SET current_balance = ? WHERE user_id = ?");
+                s.setInt(1, currentBalance + totalCost);
+                s.setInt(2, userID);
+                s.executeUpdate();
+            }
+            else
+                return false;
+        }
+        
+        for (int i = 0; i < pIDs.length; i++) {
+            int productID = Integer.parseInt(pIDs[i]);
+            int productQuantity = Integer.parseInt(pQuantities[i]);
+            s = SQLcon.prepareStatement("SELECT available_quantity FROM PRODUCTS WHERE product_id = ?");
+            s.setInt(1, productID);
+            rs = s.executeQuery();
+            
+            if (rs.next()) {
+                int availableQuantity = rs.getInt("available_quantity");
+                if (productQuantity <= availableQuantity) {
+                    s = SQLcon.prepareStatement("UPDATE PRODUCTS SET available_quantity = ? WHERE product_id = ?");
+                    s.setInt(1, availableQuantity - productQuantity);
+                    s.setInt(2, productID);
+                    s.executeUpdate();
+                }
+                else 
+                    return false;                
+            }
+            else
+                return false;
+        }
+        SQLcon.commit();
+        return true;
     }
 
 }

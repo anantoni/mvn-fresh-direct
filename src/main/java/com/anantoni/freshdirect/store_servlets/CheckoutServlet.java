@@ -5,13 +5,21 @@
  */
 package com.anantoni.freshdirect.store_servlets;
 
+import com.anantoni.freshdirect.beans.Cart;
+import com.anantoni.freshdirect.beans.UserProfile;
+import com.anantoni.freshdirect.database_api.DatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -29,17 +37,33 @@ public class CheckoutServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            for (String value: request.getParameterValues("product_names"))
-                out.println(value);
-            out.println(request.getParameter("product_names"));
-            out.println(request.getParameter("product_ids"));
-            out.println(request.getParameter("product_list_prices"));
-            out.println(request.getParameter("product_quantities"));
+            String[] pNames = request.getParameterValues("product_names");
+            String[] pIDs = request.getParameterValues("product_ids");
+            String[] pListPrices = request.getParameterValues("product_list_prices");
+            String[] pQuantities = request.getParameterValues("product_quantities");
+            HttpSession session = request.getSession(true);
             
+            UserProfile userProfile = (UserProfile)session.getAttribute("userProfile");
+            Cart cart = (Cart)session.getAttribute("shoppingCart");
+            DatabaseManager dbManager = new DatabaseManager();
+            int totalCost = cart.getTotalCost();
+            
+            if (dbManager.checkout(userProfile, pIDs, pQuantities, totalCost)) {
+                session.setAttribute("shoppingCart", new Cart());
+                String redirectURL = response.encodeRedirectURL("user_profile.html");
+                response.sendRedirect(redirectURL);
+            }
+            else {
+                session.setAttribute("shoppingCart", new Cart());
+                String error = "Checkout Failed";
+                request.setAttribute("error", error);
+                RequestDispatcher rd = request.getRequestDispatcher(response.encodeURL("shopping_cart.html"));
+                rd.forward(request, response);
+            }
         }
     }
 
@@ -55,7 +79,11 @@ public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(CheckoutServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -69,7 +97,11 @@ public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(CheckoutServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

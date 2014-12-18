@@ -14,7 +14,7 @@ public class Product implements java.io.Serializable {
     private String name;
     private String description;
     private char productGroup;
-    private double listPrice;
+    private int listPrice;
     private int availableQuantity;
     private int procurementLevel;
     private int procurementQuantity;
@@ -78,14 +78,14 @@ public class Product implements java.io.Serializable {
     /**
      * @return the listPrice
      */
-    public double getListPrice() {
+    public int getListPrice() {
         return listPrice;
     }
 
     /**
      * @param listPrice the listPrice to set
      */
-    public void setListPrice(double listPrice) {
+    public void setListPrice(int listPrice) {
         this.listPrice = listPrice;
     }
 

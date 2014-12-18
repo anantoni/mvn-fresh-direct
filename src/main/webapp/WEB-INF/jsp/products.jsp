@@ -20,7 +20,7 @@
                 <input type="hidden" name="product_id" value="<c:out value="${product.productID}"/>">
                 <input type="hidden" name="product_list_price" value="<c:out value="${product.listPrice}"/>">
                 <input type="number" name="product_quantity" min="0" max="<c:out value="${product.availableQuantity}"/>" step="1">
-                <c:if test="${sessionScope.username != null}">
+                <c:if test="${sessionScope.userProfile!= null}">
                     <input type="submit" value="Add to Cart">
                 </c:if>
             </form>

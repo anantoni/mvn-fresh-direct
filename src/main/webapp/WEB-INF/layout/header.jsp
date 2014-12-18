@@ -13,15 +13,15 @@
     <div id="header">
 
     <div id="logo"> <a style="color: white; text-decoration: none;" href="index.html"> Online Grocery Store </a> </div>
-    <c:if test="${sessionScope.username != null}">
-        <c:out value="${sessionScope.username}"/> 
+    <c:if test="${sessionScope.userProfile != null}">
+        <c:out value="${sessionScope.userProfile}"/> 
     </c:if>
     </div>
 
     <nav>
         <ul>
             <li><a href="index.html">Home</a></li>
-            <c:if test="${sessionScope.username == null}">
+            <c:if test="${sessionScope.userProfile == null}">
             <li><a href="login.html">Login</a></li>
                 <li><a href="register.html">Register</a></li>
             </c:if>
@@ -29,10 +29,10 @@
             <li><a href="browse_categories.html"> Browse Categories <span class="caret"></span></a></li>
             <li><a href="queries.html"> Query the Store Database <span class="caret"></span></a></li>
                         
-            <c:if test="${sessionScope.username != null}">
+            <c:if test="${sessionScope.userProfile != null}">
                 <li><a href="shopping_cart.html"> Shopping Cart (
-                    <c:if test="${sessionScope.shopping_cart != null}">
-                        <c:out value="${sessionScope.shopping_cart.totalPrice}"/> 
+                    <c:if test="${sessionScope.shoppingCart != null}">
+                        <c:out value="${sessionScope.shoppingCart.totalCost}"/> 
                     </c:if>
                 )<span class="caret"></span></a></li>
                 <li><a href="new_product.html"> Register New Product <span class="caret"></span></a></li>

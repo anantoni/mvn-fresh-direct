@@ -11,7 +11,7 @@
         String redirectURL = "./index.jsp";
         response.sendRedirect(redirectURL);
     } else {
-        if (session.getAttribute("username") == null || session.getAttribute("user_id") == null) {
+        if (session.getAttribute("userProfile") == null) {
             String redirectURL = "./index.jsp";
             response.sendRedirect(redirectURL);
         } else {

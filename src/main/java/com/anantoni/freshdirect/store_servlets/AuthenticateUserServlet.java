@@ -40,7 +40,6 @@ public class AuthenticateUserServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println("niaou");
         try {
-            int user_id;
             SecurityFunctions sfunctions = new SecurityFunctions();
 
             if (request.getParameter("username") == null || request.getParameter("password") == null) {
@@ -68,12 +67,10 @@ public class AuthenticateUserServlet extends HttpServlet {
                 /**
                  * On successful login redirect
                  */
-                if ((user_id = dbManager.login(username, password)) != -1) {
-                    UserProfile userProfile = dbManager.getProfileData(user_id);
+                UserProfile userProfile;
+                if ((userProfile = dbManager.login(username, password)) != null) {
                     HttpSession session = request.getSession(true);
-                    session.setAttribute("username", username);
-                    session.setAttribute("user_id", user_id);
-                    session.setAttribute("shopping_cart", new Cart());
+                    session.setAttribute("shoppingCart", new Cart());
                     session.setAttribute("userProfile", userProfile);
                     String redirectURL = response.encodeRedirectURL("user_profile.html");
                     response.sendRedirect(redirectURL);

@@ -14,11 +14,11 @@ import java.util.Map;
  */
 public class Cart implements java.io.Serializable {
     private Map<OrderedProduct, Integer> productMap;
-    private double totalPrice;
+    private int totalCost;
     
     public Cart() {
         productMap = new HashMap();
-        totalPrice = 0.00;
+        totalCost = 0;
     }
 
     public void addProduct(OrderedProduct product) {
@@ -26,7 +26,7 @@ public class Cart implements java.io.Serializable {
             getProductMap().put(product, getProductMap().get(product) + product.getQuantity());
         else 
             getProductMap().put(product, product.getQuantity());
-        setTotalPrice(getTotalPrice() + product.getPrice() * product.getQuantity());
+        setTotalCost(totalCost + product.getPrice() * product.getQuantity());
     }
 
     /**
@@ -46,15 +46,15 @@ public class Cart implements java.io.Serializable {
     /**
      * @return the totalPrice
      */
-    public double getTotalPrice() {
-        return totalPrice;
+    public int getTotalCost() {
+        return totalCost;
     }
 
     /**
-     * @param totalPrice the totalPrice to set
+     * @param totalCost
      */
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
     }
     
     

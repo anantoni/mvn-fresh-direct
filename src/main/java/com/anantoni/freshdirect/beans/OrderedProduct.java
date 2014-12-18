@@ -13,7 +13,7 @@ public class OrderedProduct implements java.io.Serializable {
     private int productID;
     private String name;
     private int quantity;
-    private double price;
+    private int price;
 
     /**
      * @return the productID
@@ -60,14 +60,14 @@ public class OrderedProduct implements java.io.Serializable {
     /**
      * @return the price
      */
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
     /**
      * @param price the price to set
      */
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
     

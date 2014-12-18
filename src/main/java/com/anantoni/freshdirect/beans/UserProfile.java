@@ -9,7 +9,7 @@ package com.anantoni.freshdirect.beans;
  * @author Lelouch
  */
 public class UserProfile implements java.io.Serializable {
-        
+    private int userID;
     private String username;
     private String firstname;
     private String lastname; 
@@ -163,5 +163,19 @@ public class UserProfile implements java.io.Serializable {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the userID
+     */
+    public int getUserID() {
+        return userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 }

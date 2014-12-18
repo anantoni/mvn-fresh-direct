@@ -38,7 +38,7 @@ public class AddToCartServlet extends HttpServlet {
         
         String name = request.getParameter("product_name");
         int productID = Integer.parseInt(request.getParameter("product_id"));
-        double listPrice = Double.parseDouble(request.getParameter("product_list_price"));
+        int listPrice = Integer.parseInt(request.getParameter("product_list_price"));
         int quantity = Integer.parseInt(request.getParameter("product_quantity"));
         
         OrderedProduct product = new OrderedProduct();
@@ -48,15 +48,15 @@ public class AddToCartServlet extends HttpServlet {
         product.setQuantity(quantity);
         
         HttpSession session = request.getSession(true);                                                     
-        if (session.getAttribute("shopping_cart") == null) {
+        if (session.getAttribute("shoppingCart") == null) {
             Cart cart = new Cart();
             cart.addProduct(product);
-            session.setAttribute("shopping_cart", name);
+            session.setAttribute("shoppingCart", name);
         }
         else {
-            Cart cart = (Cart)session.getAttribute("shopping_cart");
+            Cart cart = (Cart)session.getAttribute("shoppingCart");
             cart.addProduct(product);
-            session.setAttribute("shopping_cart", cart);
+            session.setAttribute("shoppingCart", cart);
         }
         String redirectURL = response.encodeRedirectURL(response.encodeURL(request.getHeader("Referer")));
         response.sendRedirect(redirectURL);
