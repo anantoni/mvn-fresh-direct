@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="freshdirect:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="FreshDirect.war">
+      <element id="artifact" artifact-name="freshdirect:war exploded" />
+    </root>
+  </artifact>
+</component>

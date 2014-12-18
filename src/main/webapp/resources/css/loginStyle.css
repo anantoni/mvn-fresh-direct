@@ -1,0 +1,100 @@
+/* 
+    Document   : loginStyle
+    Created on : 24 Ιουν 2011, 12:33:37 πμ
+    Author     : Lelouch
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#panelHeader {
+            width: 100%;
+}
+
+h2 {
+            display: inline-block;
+            font-size: 36px;
+            margin: 0;
+            margin-top: 40px;
+    
+}
+
+body {
+            margin: 0;
+}
+
+root { 
+            display: block;
+}
+
+hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #eee;
+            margin: 0;
+            width: 50%;
+            margin-bottom: 20px;
+}
+
+#loginPanel {
+    
+            background-color: rgba(240, 240, 240, 0.85);
+            border-radius: 20px;
+            -moz-border-radius: 20px;
+            -o-border-radius: 20px;
+            width: 1000px;
+            min-height: 400px;
+            text-align: left;
+            overflow: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 4px;
+            border: 2px solid #EEF4F7;
+
+}
+
+.loginLabel {
+            display: inline-block;
+            width: 140px;
+            text-align: left;
+            font-size: 100%;
+            margin-left: 300px;
+            
+}
+
+.loginLabel:first-child {
+            margin-top: 30px;
+
+}
+
+.loginInput {
+            display: inline-block;
+            width: 200px;
+}
+
+.loginInput:focus {
+            border: 2px solid #EF4F7A;
+}
+
+#loginButton {
+            display: inline-block;
+            background: url(../images/button_black_wide.jpg) repeat-x;
+            width: 80px;
+            height: 26px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            -moz-border-radius: 8px;
+            -o-bordera-radius: 8px;
+}
+
+#loginButton:hover {
+            cursor: pointer;
+            border-radius: 12px;
+            -moz-border-radius: 12px;
+            -o-bordera-radius: 12px;
+}
