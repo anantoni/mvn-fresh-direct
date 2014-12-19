@@ -393,7 +393,7 @@ public class DatabaseManager {
     }
     
     public List<Product> bestSellingProduct() throws SQLException {
-        List<Product> productsList = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
         
         CallableStatement cs = SQLcon.prepareCall("{call fd_schema.bestSellingProducts()}");
         ResultSet rs = cs.executeQuery();
@@ -410,9 +410,30 @@ public class DatabaseManager {
             product.setProcurementQuantity(rs.getInt("procurement_quantity"));
             product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
             product.setOrderSum(rs.getInt("order_sum"));
-            productsList.add(product);
+            productList.add(product);
         }
-        return productsList;
+        return productList;
+    }
+    
+    public List<Product> neverOrderedProducts() throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.neverOrderedProducts()}");
+        ResultSet rs = cs.executeQuery();
+
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            productList.add(product);
+        }
+        return productList;
     }
 
 

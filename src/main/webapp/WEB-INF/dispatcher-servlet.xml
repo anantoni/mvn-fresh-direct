@@ -33,7 +33,7 @@
                 <prop key="user_profile.html">userProfileController</prop>
                 <prop key="queries.html">queriesController</prop>
                 <prop key="best_selling_products.html">bestSellingProductsController</prop>
-                
+                <prop key="never_ordered_products.html">neverOrderedProductsController</prop>
             </props>
         </property>
     </bean>
@@ -91,6 +91,10 @@
     <bean name="bestSellingProductsController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="best_selling_products" />
+    
+    <bean name="neverOrderedProductsController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="never_ordered_products" />
     
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />

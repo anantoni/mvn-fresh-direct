@@ -7,7 +7,6 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -33,9 +32,10 @@
         <servlet-name>BestSellingProductServlet</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.BestSellingProductServlet</servlet-class>
     </servlet>
-    
-    
-    
+    <servlet>
+        <servlet-name>NeverOrderedProductsServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.NeverOrderedProductsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -59,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>BestSellingProductServlet</servlet-name>
         <url-pattern>/BestSellingProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NeverOrderedProductsServlet</servlet-name>
+        <url-pattern>/NeverOrderedProductsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

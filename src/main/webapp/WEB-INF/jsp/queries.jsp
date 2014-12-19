@@ -24,7 +24,7 @@
         <form action="MostExpensiveProductPerGroupServlet" method="get" name="search_form">
             <input type="submit" value="Submit">
         </form>
-        <form action="NeverOrderedServlet" method="get" name="search_form">
+        <form action="NeverOrderedProductsServlet" method="get" name="search_form">
             <input type="submit" value="Submit">
         </form>
         <form action="NotOrderedInMonthOfYearServlet" method="get" name="search_form">
