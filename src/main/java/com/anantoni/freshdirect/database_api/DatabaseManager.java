@@ -435,6 +435,27 @@ public class DatabaseManager {
         }
         return productList;
     }
+    
+    public List<Product> mostExpensiveProductsPerGroup() throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.mostExpensiveProductsPerGroup()}");
+        ResultSet rs = cs.executeQuery();
+
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            productList.add(product);
+        }
+        return productList;
+    }
 
 
 }

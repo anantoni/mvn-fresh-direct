@@ -36,6 +36,10 @@
         <servlet-name>NeverOrderedProductsServlet</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.NeverOrderedProductsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MostExpensiveProductsPerGroupServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.MostExpensiveProductsPerGroupServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>NeverOrderedProductsServlet</servlet-name>
         <url-pattern>/NeverOrderedProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MostExpensiveProductsPerGroupServlet</servlet-name>
+        <url-pattern>/MostExpensiveProductsPerGroupServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
