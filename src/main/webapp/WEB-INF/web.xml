@@ -29,6 +29,10 @@
         <servlet-name>CreateAccountServlet</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.CreateAccountServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BestSellingProductServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.BestSellingProductServlet</servlet-class>
+    </servlet>
     
     
     
@@ -51,6 +55,10 @@
     <servlet-mapping>
         <servlet-name>CreateAccountServlet</servlet-name>
         <url-pattern>/CreateAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BestSellingProductServlet</servlet-name>
+        <url-pattern>/BestSellingProductServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

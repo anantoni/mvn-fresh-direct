@@ -18,6 +18,8 @@ public class Product implements java.io.Serializable {
     private int availableQuantity;
     private int procurementLevel;
     private int procurementQuantity;
+    private int orderSum;
+    private boolean procurementLevelReached;
 
     /**
      * @return the productID
@@ -129,6 +131,41 @@ public class Product implements java.io.Serializable {
      */
     public void setProcurementQuantity(int procurementQuantity) {
         this.procurementQuantity = procurementQuantity;
+    }
+
+    /**
+     * @return the orderSum
+     */
+    public int getOrderSum() {
+        return orderSum;
+    }
+
+    /**
+     * @param orderSum the orderSum to set
+     */
+    public void setOrderSum(int orderSum) {
+        this.orderSum = orderSum;
+    }
+
+    /**
+     * @return the procurementLevelReached
+     */
+    public boolean getProcurementLevelReached() {
+        return procurementLevelReached;
+    }
+
+    /**
+     * @param procurementLevelReached the procurementLevelReached to set
+     */
+    public void setProcurementLevelReached(boolean procurementLevelReached) {
+        this.procurementLevelReached = procurementLevelReached;
+    }
+    
+    /**
+     * @param procurementLevelReached the procurementLevelReached to set
+     */
+    public void setProcurementLevelReached(int procurementLevelReached) {
+        this.procurementLevelReached = procurementLevelReached != 0;
     }
     
     

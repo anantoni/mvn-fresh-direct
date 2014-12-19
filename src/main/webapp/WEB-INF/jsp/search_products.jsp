@@ -35,6 +35,8 @@
             <label for="supplier_name"> Supplier Name: </label>
             <input type="search" name="supplier_name"/>
         </div>
+            <input type="submit" value="Submit"> 
+            
         </form>
         <%@ include file="../layout/footer.jsp" %>
     </body>

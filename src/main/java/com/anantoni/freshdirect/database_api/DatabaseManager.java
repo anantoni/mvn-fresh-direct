@@ -7,6 +7,7 @@ package com.anantoni.freshdirect.database_api;
 
 import com.anantoni.freshdirect.beans.UserProfile;
 import com.anantoni.freshdirect.beans.Product;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -263,8 +264,17 @@ public class DatabaseManager {
             userProfile.setStreet(rs.getString("street_name"));
             userProfile.setStreetNumber(rs.getInt("street_number"));
             userProfile.setPostCode(rs.getInt("post_code"));
+            rs.close();
             s.close();
+            s = SQLcon.prepareStatement("SELECT * FROM MANAGERS WHERE user_id = ?");
+            s.setInt(1, userProfile.getUserID());
+            rs = s.executeQuery();
+            if (rs.next())
+                userProfile.setRole("manager");
+            else
+                userProfile.setRole("customer");
         }
+        
         return userProfile;
 
     }
@@ -381,5 +391,29 @@ public class DatabaseManager {
         SQLcon.commit();
         return true;
     }
+    
+    public List<Product> bestSellingProduct() throws SQLException {
+        List<Product> productsList = new ArrayList<>();
+        
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.bestSellingProducts()}");
+        ResultSet rs = cs.executeQuery();
+
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("product_name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProductGroup(rs.getString("product_group").charAt(0));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            product.setOrderSum(rs.getInt("order_sum"));
+            productsList.add(product);
+        }
+        return productsList;
+    }
+
 
 }

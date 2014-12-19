@@ -10,6 +10,7 @@ package com.anantoni.freshdirect.beans;
  */
 public class UserProfile implements java.io.Serializable {
     private int userID;
+    private String role;
     private String username;
     private String firstname;
     private String lastname; 
@@ -20,6 +21,7 @@ public class UserProfile implements java.io.Serializable {
     private int postCode;
     private int creditLimit;
     private int currentBalance;
+    
         
     public UserProfile() {
 
@@ -177,5 +179,19 @@ public class UserProfile implements java.io.Serializable {
      */
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
     }
 }

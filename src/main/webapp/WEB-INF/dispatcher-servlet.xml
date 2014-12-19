@@ -26,11 +26,14 @@
                 <prop key="logout.html">logoutController</prop>
                 <prop key="products.html">productsController</prop>
                 <prop key="register.html">registerController</prop>
+                <prop key="new_product.html">newProductController</prop>
                 <prop key="search_products.html">searchProductsController</prop>
                 <prop key="shopping_cart.html">shoppingCartController</prop>
                 <prop key="browse_categories.html">browseCategoriesController</prop>
                 <prop key="user_profile.html">userProfileController</prop>
                 <prop key="queries.html">queriesController</prop>
+                <prop key="best_selling_products.html">bestSellingProductsController</prop>
+                
             </props>
         </property>
     </bean>
@@ -40,9 +43,7 @@
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp" />
 
-    <!--
-    The index controller.
-    -->
+    <!-- Controllers for jsps -->
     <bean name="indexController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
@@ -82,6 +83,14 @@
     <bean name="queriesController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="queries" />
+    
+    <bean name="newProductController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="new_product" />
+    
+    <bean name="bestSellingProductsController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="best_selling_products" />
     
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
