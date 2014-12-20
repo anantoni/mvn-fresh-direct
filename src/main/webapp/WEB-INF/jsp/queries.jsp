@@ -24,7 +24,7 @@
             Query for the best selling product in terms of units sold:
             <input type="submit" value="Submit">
         </form>
-        <form action="MostExpensiveProductPerGroupServlet" method="get" name="search_form">
+        <form action="MostExpensiveProductsPerGroupServlet" method="get" name="search_form">
             Query for the most expensive product per group:
             <input type="submit" value="Submit">
         </form>

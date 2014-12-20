@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Most Expensive Products Per Group Products</title>
+        <title>Most Expensive Product Per Group</title>
         <%@ include file="../layout/header.jsp" %>
         
         <c:forEach var="product" items="${productList}">

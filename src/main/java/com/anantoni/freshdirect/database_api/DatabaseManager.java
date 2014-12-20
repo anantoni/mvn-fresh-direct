@@ -439,13 +439,13 @@ public class DatabaseManager {
     public List<Product> mostExpensiveProductsPerGroup() throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.mostExpensiveProductsPerGroup()}");
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.mostExpensiveProductPerGroup()}");
         ResultSet rs = cs.executeQuery();
 
         while (rs.next()) {
             Product product = new Product();
             product.setProductID(rs.getInt("product_id"));
-            product.setName(rs.getString("name"));
+            product.setName(rs.getString("product_name"));
             product.setDescription(rs.getString("description"));
             product.setListPrice(rs.getInt("list_price"));
             product.setAvailableQuantity(rs.getInt("available_quantity"));

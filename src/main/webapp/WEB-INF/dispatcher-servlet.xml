@@ -34,6 +34,7 @@
                 <prop key="queries.html">queriesController</prop>
                 <prop key="best_selling_products.html">bestSellingProductsController</prop>
                 <prop key="never_ordered_products.html">neverOrderedProductsController</prop>
+                <prop key="most_expensive_products.html">mostExpensiveProductsController</prop>
             </props>
         </property>
     </bean>
@@ -96,6 +97,10 @@
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="never_ordered_products" />
     
+    <bean name="mostExpensiveProductsController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="most_expensive_products" />
+        
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
