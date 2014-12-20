@@ -56,6 +56,10 @@
         <servlet-name>DegreeOfSeparationBetweenTwoSuppliers</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.DegreeOfSeparationBetweenTwoSuppliersServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.SearchProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -103,6 +107,10 @@
     <servlet-mapping>
         <servlet-name>DegreeOfSeparationBetweenTwoSuppliers</servlet-name>
         <url-pattern>/DegreeOfSeparationBetweenTwoSuppliers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchProductServlet</servlet-name>
+        <url-pattern>/SearchProductServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

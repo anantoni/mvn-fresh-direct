@@ -12,7 +12,7 @@
         <title>Product Search</title>
 
         <%@ include file="../layout/header.jsp" %>
-        <form class="search_form" action="" method="get" name="search_form">
+        <form class="search_form" action="SearchProductServlet" method="get">
         <div class="product_section">
             <label for="product_name"> Product Name: </label>
             <input autofocus type="search" name="product_name"/>

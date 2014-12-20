@@ -515,6 +515,69 @@ public class DatabaseManager {
             productList.add(product);
         }
         return productList;
+    }
+    
+    public List<Product> sixDegreesOfSeparation(String supplier1, String supplier2) throws SQLException {
+        List<Product> productList = new ArrayList<>();
         
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.productsNotOrderedInMonthOfYear(?, ?)}");
+        cs.setInt(1, Integer.parseInt(supplier1));
+        cs.setInt(2, Integer.parseInt(supplier2));
+        ResultSet rs = cs.executeQuery();
+
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            productList.add(product);
+        }
+        return productList;
+    }
+    
+    public List<Product> searchProduct(String product_name, String product_description, String product_group_name, String supplier_name) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.searchProduct(?, ?, ?, ?)}");
+        if (product_name.equals(""))
+            cs.setObject(1, null);
+        else
+            cs.setString(1, product_name);
+        
+        if (product_description.equals(""))
+            cs.setObject(2, null);
+        else
+            cs.setString(2, product_description);
+        
+        if (product_group_name.equals("") || product_group_name.equals("A"))
+            cs.setObject(3, null);
+        else
+            cs.setString(3, product_group_name);
+        
+        if (supplier_name.equals(""))
+            cs.setString(4, null);
+        else
+            cs.setString(4, supplier_name);
+        ResultSet rs = cs.executeQuery();
+        
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            productList.add(product);
+        }
+        
+        return productList;
     }
 }
