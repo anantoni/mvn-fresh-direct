@@ -40,6 +40,14 @@
         <servlet-name>MostExpensiveProductsPerGroupServlet</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.MostExpensiveProductsPerGroupServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderSumMinMaxServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.OrderSumMinMaxServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GreaterThan10KServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.GreaterThan10KServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>MostExpensiveProductsPerGroupServlet</servlet-name>
         <url-pattern>/MostExpensiveProductsPerGroupServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderSumMinMaxServlet</servlet-name>
+        <url-pattern>/OrderSumMinMaxServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GreaterThan10KServlet</servlet-name>
+        <url-pattern>/GreaterThan10KServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

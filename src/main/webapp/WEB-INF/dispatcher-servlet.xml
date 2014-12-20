@@ -35,6 +35,8 @@
                 <prop key="best_selling_products.html">bestSellingProductsController</prop>
                 <prop key="never_ordered_products.html">neverOrderedProductsController</prop>
                 <prop key="most_expensive_products.html">mostExpensiveProductsController</prop>
+                <prop key="order_sum_min_max_per_product.html">orderSumMinMaxPerProductController</prop>
+                <prop key="greater_than_10k_orders.html">greaterThan10kOrdersController</prop>
             </props>
         </property>
     </bean>
@@ -100,7 +102,15 @@
     <bean name="mostExpensiveProductsController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="most_expensive_products" />
-        
+    
+    <bean name="orderSumMinMaxPerProductController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="order_sum_min_max_per_product" />
+    
+    <bean name="greaterThan10kOrdersController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="greater_than_10k_orders" />
+    
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 

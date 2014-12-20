@@ -19,6 +19,8 @@ public class Product implements java.io.Serializable {
     private int procurementLevel;
     private int procurementQuantity;
     private int orderSum;
+    private int minOrderSum;
+    private int maxOrderSum;
     private boolean procurementLevelReached;
 
     /**
@@ -166,6 +168,34 @@ public class Product implements java.io.Serializable {
      */
     public void setProcurementLevelReached(int procurementLevelReached) {
         this.procurementLevelReached = procurementLevelReached != 0;
+    }
+
+    /**
+     * @return the minOrderSum
+     */
+    public int getMinOrderSum() {
+        return minOrderSum;
+    }
+
+    /**
+     * @param minOrderSum the minOrderSum to set
+     */
+    public void setMinOrderSum(int minOrderSum) {
+        this.minOrderSum = minOrderSum;
+    }
+
+    /**
+     * @return the maxOrderSum
+     */
+    public int getMaxOrderSum() {
+        return maxOrderSum;
+    }
+
+    /**
+     * @param maxOrderSum the maxOrderSum to set
+     */
+    public void setMaxOrderSum(int maxOrderSum) {
+        this.maxOrderSum = maxOrderSum;
     }
     
     

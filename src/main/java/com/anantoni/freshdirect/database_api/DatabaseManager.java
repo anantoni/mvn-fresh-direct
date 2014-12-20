@@ -457,5 +457,40 @@ public class DatabaseManager {
         return productList;
     }
 
+    public List<Product> orderSumMinMaxPerProduct() throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.orderSumMinMaxPerProduct()}");
+        ResultSet rs = cs.executeQuery();
 
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("product_name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            product.setMinOrderSum(rs.getInt("min_order_sum"));
+            product.setMaxOrderSum(rs.getInt("max_order_sum"));
+            productList.add(product);
+        }
+        return productList;
+    }
+    
+    public List<Integer> daysGreaterThan10k(String month, String year) throws SQLException {
+        List<Integer> dayList = new ArrayList<>();
+        
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.daysGreaterThan10k(?, ?)}");
+        cs.setInt(1, Integer.parseInt(month));
+        cs.setInt(2, Integer.parseInt(year));
+        ResultSet rs = cs.executeQuery();
+
+        while (rs.next()) 
+            dayList.add(rs.getInt("found_day"));
+
+        return dayList;
+    }
 }

@@ -12,12 +12,13 @@
         <title>Query the Store Database</title>
         <%@ include file="../layout/header.jsp" %>
     
-        <form action="HighLowOrderSumsServlet" method="get" name="search_form">
+        <form action="OrderSumMinMaxServlet" method="get" name="search_form">
             Query for the highest and lowest order sums per product:
             <input type="submit" value="Submit"> 
         </form>
         <form action="GreaterThan10KServlet" method="get" name="search_form">
-            Query for the days on which the value of all orders was more than 10,000 euros in month: of year:
+            Query for the days on which the value of all orders was more than 10,000 euros in 
+            <input type="text" type="text" value="12/2014" class="datepicker" name="date">
             <input type="submit" value="Submit"> 
         </form>
         <form action="BestSellingProductServlet" method="get" name="search_form">
@@ -33,11 +34,12 @@
             <input type="submit" value="Submit">
         </form>
         <form action="NotOrderedInMonthOfYearServlet" method="get" name="search_form">
-            Query for the products not ordered in month: of year: 
+            Query for the products not ordered in 
+            <input type="text" type="text"  value="12/2014" class="datepicker" name="date">
             <input type="submit" value="Submit">
         </form>
         <form action="SixDegreesOfSeparationServlet" method="get" name="search_form">
-            Query the degree of seperation between supplier #1: and supplier #2
+            Query the degree of separation between supplier #1: and supplier #2
             <input type="submit" value="Submit">
         </form>
         <%@ include file="../layout/footer.jsp" %>
