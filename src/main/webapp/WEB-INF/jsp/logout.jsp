@@ -8,15 +8,15 @@
 <%
 
     if (request.getSession(false) == null) {
-        String redirectURL = "./index.jsp";
+        String redirectURL = "index.html";
         response.sendRedirect(redirectURL);
     } else {
         if (session.getAttribute("userProfile") == null) {
-            String redirectURL = "./index.jsp";
+            String redirectURL = "index.html";
             response.sendRedirect(redirectURL);
         } else {
             session.invalidate();
-            String redirectURL = "./index.jsp";
+            String redirectURL = "index.html";
             response.sendRedirect(redirectURL);
         }
     }

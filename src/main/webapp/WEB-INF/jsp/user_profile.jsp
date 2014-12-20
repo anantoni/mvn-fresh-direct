@@ -13,10 +13,8 @@
         <title>User Profile</title>
         <%@ include file="../layout/header.jsp" %>
     
-    <div id="mainContainer" align="center">
         Name: <c:out value="${userProfile.username}"/>
         Email: <c:out value="${userProfile.email}" />
-    </div>
-    <%@ include file="../layout/footer.jsp" %>        
+        <%@ include file="../layout/footer.jsp" %>        
     </body>
 </html>
