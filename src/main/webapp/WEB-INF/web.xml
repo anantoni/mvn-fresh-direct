@@ -48,6 +48,10 @@
         <servlet-name>GreaterThan10KServlet</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.GreaterThan10KServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductsNotOrderedInMonthOfYearServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.ProductsNotOrderedInMonthOfYearServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>GreaterThan10KServlet</servlet-name>
         <url-pattern>/GreaterThan10KServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductsNotOrderedInMonthOfYearServlet</servlet-name>
+        <url-pattern>/ProductsNotOrderedInMonthOfYearServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

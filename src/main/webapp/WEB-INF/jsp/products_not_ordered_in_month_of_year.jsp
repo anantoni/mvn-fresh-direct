@@ -1,6 +1,6 @@
 <%-- 
-    Document   : never_ordered_products
-    Created on : Dec 19, 2014, 5:50:57 PM
+    Document   : products_not_ordered_in_month_of_year
+    Created on : Dec 20, 2014, 6:57:11 PM
     Author     : anantoni
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Never Ordered Products</title>
+        <title>Products not Ordered in Month of Year</title>
         <%@ include file="../layout/header.jsp" %>
         
         <c:forEach var="product" items="${productList}">

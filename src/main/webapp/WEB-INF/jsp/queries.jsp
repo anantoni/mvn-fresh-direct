@@ -33,7 +33,7 @@
             Query for the products never ordered:
             <input type="submit" value="Submit">
         </form>
-        <form action="NotOrderedInMonthOfYearServlet" method="get" name="search_form">
+        <form action="ProductsNotOrderedInMonthOfYearServlet" method="get" name="search_form">
             Query for the products not ordered in 
             <input type="text" type="text"  value="12/2014" class="datepicker" name="date">
             <input type="submit" value="Submit">
