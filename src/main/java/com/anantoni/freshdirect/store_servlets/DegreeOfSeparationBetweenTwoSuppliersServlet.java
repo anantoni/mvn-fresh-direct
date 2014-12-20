@@ -8,6 +8,7 @@ package com.anantoni.freshdirect.store_servlets;
 import com.anantoni.freshdirect.beans.Product;
 import com.anantoni.freshdirect.database_api.DatabaseManager;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author anantoni
  */
-public class NeverOrderedProductsServlet extends HttpServlet {
+public class DegreeOfSeparationBetweenTwoSuppliersServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

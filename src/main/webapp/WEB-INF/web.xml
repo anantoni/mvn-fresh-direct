@@ -52,6 +52,10 @@
         <servlet-name>ProductsNotOrderedInMonthOfYearServlet</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.ProductsNotOrderedInMonthOfYearServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DegreeOfSeparationBetweenTwoSuppliers</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.DegreeOfSeparationBetweenTwoSuppliersServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>ProductsNotOrderedInMonthOfYearServlet</servlet-name>
         <url-pattern>/ProductsNotOrderedInMonthOfYearServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DegreeOfSeparationBetweenTwoSuppliers</servlet-name>
+        <url-pattern>/DegreeOfSeparationBetweenTwoSuppliers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
