@@ -412,6 +412,9 @@ public class DatabaseManager {
             product.setOrderSum(rs.getInt("order_sum"));
             productList.add(product);
         }
+        rs.close();
+        cs.close();
+        
         return productList;
     }
     
@@ -433,6 +436,9 @@ public class DatabaseManager {
             product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
             productList.add(product);
         }
+        rs.close();
+        cs.close();
+        
         return productList;
     }
     
@@ -454,6 +460,9 @@ public class DatabaseManager {
             product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
             productList.add(product);
         }
+        rs.close();
+        cs.close();
+        
         return productList;
     }
 
@@ -477,6 +486,9 @@ public class DatabaseManager {
             product.setMaxOrderSum(rs.getInt("max_order_sum"));
             productList.add(product);
         }
+        rs.close();
+        cs.close();
+        
         return productList;
     }
     
@@ -490,7 +502,10 @@ public class DatabaseManager {
 
         while (rs.next()) 
             dayList.add(rs.getInt("found_day"));
-
+        
+        rs.close();
+        cs.close();
+        
         return dayList;
     }
     
@@ -514,6 +529,9 @@ public class DatabaseManager {
             product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
             productList.add(product);
         }
+        rs.close();
+        cs.close();
+        
         return productList;
     }
     
@@ -537,6 +555,9 @@ public class DatabaseManager {
             product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
             productList.add(product);
         }
+        rs.close();
+        cs.close();
+        
         return productList;
     }
     
@@ -577,6 +598,33 @@ public class DatabaseManager {
             product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
             productList.add(product);
         }
+        rs.close();
+        cs.close();
+        
+        return productList;
+    }
+    
+    public List<Product> suggestProducts(int product_id) throws SQLException{
+        List<Product> productList = new ArrayList<>();
+        
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.suggestProducts(?)}");
+        cs.setInt(1, product_id);
+        ResultSet rs = cs.executeQuery();
+        
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("product_name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            productList.add(product);
+        }
+        rs.close();
+        cs.close();
         
         return productList;
     }

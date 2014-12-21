@@ -7,8 +7,14 @@ package com.anantoni.freshdirect.store_servlets;
 
 import com.anantoni.freshdirect.beans.OrderedProduct;
 import com.anantoni.freshdirect.beans.Cart;
+import com.anantoni.freshdirect.beans.Product;
+import com.anantoni.freshdirect.database_api.DatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,9 +37,11 @@ public class AddToCartServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         
         String name = request.getParameter("product_name");
@@ -58,7 +66,14 @@ public class AddToCartServlet extends HttpServlet {
             cart.addProduct(product);
             session.setAttribute("shoppingCart", cart);
         }
-        String redirectURL = response.encodeRedirectURL(response.encodeURL(request.getHeader("Referer")));
+        
+        DatabaseManager dbManager = new DatabaseManager();
+        List<Product> suggestionList = dbManager.suggestProducts(productID);
+        session.setAttribute("suggestionList", suggestionList);
+//        RequestDispatcher rd = request.getRequestDispatcher(response.encodeRedirectURL(request.getHeader("Referer")));
+//        rd.forward(request, response);
+        
+        String redirectURL = response.encodeRedirectURL(request.getHeader("Referer"));
         response.sendRedirect(redirectURL);
         
     }
@@ -75,7 +90,11 @@ public class AddToCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AddToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -89,7 +108,11 @@ public class AddToCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AddToCartServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
