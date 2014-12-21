@@ -7,6 +7,7 @@ package com.anantoni.freshdirect.database_api;
 
 import com.anantoni.freshdirect.beans.UserProfile;
 import com.anantoni.freshdirect.beans.Product;
+import com.anantoni.freshdirect.beans.Supplier;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -80,6 +81,24 @@ public class DatabaseManager {
             s.close();
             return true;
         }
+    }
+    
+    public List<Supplier> getSuppliers() throws SQLException {
+        List<Supplier> supplierList = new ArrayList<>();
+        
+        PreparedStatement s = SQLcon.prepareStatement("SELECT * FROM SUPPLIERS");
+        
+        ResultSet rs = s.executeQuery();
+        
+        while (rs.next()) {
+            Supplier supplier = new Supplier();
+            supplier.setSupplierID(rs.getInt("supplier_id"));
+            supplier.setSupplierName(rs.getString("supplier_name"));
+            supplier.setSupplierEmail(rs.getString("email"));
+            supplierList.add(supplier);
+        }
+        
+        return supplierList;
     }
 
     public int createAccount(String username, String password, String email, String firstname, 
@@ -253,7 +272,8 @@ public class DatabaseManager {
 
         if (rs.next()) {
             userProfile = new UserProfile();
-            userProfile.setUserID(rs.getInt("user_id"));
+            int userID = rs.getInt("user_id");
+            userProfile.setUserID(userID);
             userProfile.setUsername(rs.getString("login_name"));
             userProfile.setFirstname(rs.getString("first_name"));
             userProfile.setLastname(rs.getString("last_name"));
@@ -267,13 +287,30 @@ public class DatabaseManager {
             rs.close();
             s.close();
             s = SQLcon.prepareStatement("SELECT * FROM MANAGERS WHERE user_id = ?");
-            s.setInt(1, userProfile.getUserID());
+            s.setInt(1, userID);
             rs = s.executeQuery();
             if (rs.next())
                 userProfile.setRole("manager");
             else
                 userProfile.setRole("customer");
+            rs.close();
+            s.close();
+            
+            s = SQLcon.prepareStatement("SELECT DISTINCT(cc.credit_card_number) AS credit_card_number FROM USERS AS u, ORDERS AS o, ORDERED_WITH_CREDIT_CARD AS owcc, CREDIT_CARDS AS cc" +
+            " WHERE u.user_id = ?" +
+            " AND o.customer_id = u.user_id" +
+            " AND o.order_id = owcc.order_id" +
+            " AND owcc.credit_card_id = cc.credit_card_id");
+            s.setInt(1, userID);
+            rs = s.executeQuery();
+            
+            List<Long> cardList = new ArrayList<>();
+            while (rs.next()) {
+                cardList.add(rs.getLong("credit_card_number"));
+                userProfile.setCardList(cardList);
+            }
         }
+        
         
         return userProfile;
 
@@ -305,7 +342,7 @@ public class DatabaseManager {
         return productsList;
     }
     
-    public boolean checkout(UserProfile userProfile, String[] pIDs, String[] pQuantities, String[] pListPrices, int totalCost) throws SQLException {
+    public boolean checkout(UserProfile userProfile, String[] pIDs, String[] pQuantities, String[] pListPrices, int totalCost, String creditCardNumber) throws SQLException {
         int userID = userProfile.getUserID();
         int orderID = -1;
         SQLcon.setAutoCommit(false);
@@ -388,6 +425,41 @@ public class DatabaseManager {
                 return false;
             }
         }
+        //Check if credit card number exists in CREDIT_CARDS table
+        s = SQLcon.prepareStatement("SELECT credit_card_id FROM CREDIT_CARDS WHERE credit_card_number = ?");
+        s.setLong(1, Long.parseLong(creditCardNumber));
+        rs = s.executeQuery();
+        
+        int creditCardID = -1;
+        if (rs.next()) {
+            creditCardID = rs.getInt("credit_card_id");
+            s.close();
+        } else {
+            s.close();
+        }
+        
+        //If not exists insert to CREDITS_CARDS table
+        if (creditCardID == -1) {
+            s = SQLcon.prepareStatement("INSERT INTO CREDIT_CARDS("
+                    + "credit_card_number)"
+                    + "VALUES(?)", Statement.RETURN_GENERATED_KEYS);
+            s.setLong(1, Long.parseLong(creditCardNumber));
+            s.executeUpdate();
+            rs = s.getGeneratedKeys();
+
+            if (rs.next()) {
+                creditCardID = rs.getInt(1);
+                s.close();
+            } else {
+                s.close();
+            }
+        }
+        
+        s = SQLcon.prepareStatement("INSERT INTO ORDERED_WITH_CREDIT_CARD(order_id, credit_card_id) VALUES(?, ?)");
+        s.setInt(1, orderID);
+        s.setInt(2, creditCardID);
+        s.executeUpdate();
+        
         SQLcon.commit();
         return true;
     }
@@ -515,6 +587,7 @@ public class DatabaseManager {
         CallableStatement cs = SQLcon.prepareCall("{call fd_schema.productsNotOrderedInMonthOfYear(?, ?)}");
         cs.setInt(1, Integer.parseInt(month));
         cs.setInt(2, Integer.parseInt(year));
+        
         ResultSet rs = cs.executeQuery();
 
         while (rs.next()) {
@@ -535,36 +608,26 @@ public class DatabaseManager {
         return productList;
     }
     
-    public List<Product> sixDegreesOfSeparation(String supplier1, String supplier2) throws SQLException {
+    public int sixDegreesOfSeparation(int supplier1, int supplier2) throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.productsNotOrderedInMonthOfYear(?, ?)}");
-        cs.setInt(1, Integer.parseInt(supplier1));
-        cs.setInt(2, Integer.parseInt(supplier2));
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.sixDegreesOfSeparation(?, ?, ?)}");
+        cs.setInt(1, supplier1);
+        cs.setInt(2, supplier2);
+        cs.registerOutParameter(3, java.sql.Types.INTEGER);
         ResultSet rs = cs.executeQuery();
 
-        while (rs.next()) {
-            Product product = new Product();
-            product.setProductID(rs.getInt("product_id"));
-            product.setName(rs.getString("name"));
-            product.setDescription(rs.getString("description"));
-            product.setListPrice(rs.getInt("list_price"));
-            product.setAvailableQuantity(rs.getInt("available_quantity"));
-            product.setProcurementLevel(rs.getInt("procurement_level"));
-            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
-            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
-            productList.add(product);
-        }
+        int degree = cs.getInt(3);
         rs.close();
         cs.close();
         
-        return productList;
+        return degree;
     }
     
     public List<Product> searchProduct(String product_name, String product_description, String product_group_name, String supplier_name) throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.searchProduct(?, ?, ?, ?)}");
+        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.searchProducts(?, ?, ?, ?)}");
         if (product_name.equals(""))
             cs.setObject(1, null);
         else
@@ -580,7 +643,7 @@ public class DatabaseManager {
         else
             cs.setString(3, product_group_name);
         
-        if (supplier_name.equals(""))
+        if (supplier_name != null && supplier_name.equals(""))
             cs.setString(4, null);
         else
             cs.setString(4, supplier_name);
@@ -628,4 +691,8 @@ public class DatabaseManager {
         
         return productList;
     }
+    
+    
+    
+    
 }

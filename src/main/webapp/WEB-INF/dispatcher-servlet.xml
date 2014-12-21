@@ -38,6 +38,7 @@
                 <prop key="order_sum_min_max_per_product.html">orderSumMinMaxPerProductController</prop>
                 <prop key="greater_than_10k_orders.html">greaterThan10kOrdersController</prop>
                 <prop key="products_not_ordered_in_month_of_year.html">productsNotOrderedInMonthOfYearController</prop>
+                <prop key="degree_of_separation.html">degreeOfSeparationController</prop>
             </props>
         </property>
     </bean>
@@ -115,6 +116,10 @@
     <bean name="productsNotOrderedInMonthOfYearController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="products_not_ordered_in_month_of_year" />
+    
+     <bean name="degreeOfSeparationController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="degree_of_separation" />
     
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />

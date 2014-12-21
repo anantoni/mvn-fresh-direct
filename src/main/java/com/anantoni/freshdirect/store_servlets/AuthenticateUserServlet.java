@@ -71,6 +71,8 @@ public class AuthenticateUserServlet extends HttpServlet {
                 if ((userProfile = dbManager.login(username, password)) != null) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("shoppingCart", new Cart());
+                    
+                    userProfile.setSupplierList(dbManager.getSuppliers());
                     session.setAttribute("userProfile", userProfile);
                     String redirectURL = response.encodeRedirectURL("user_profile.html");
                     response.sendRedirect(redirectURL);

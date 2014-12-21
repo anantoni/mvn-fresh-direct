@@ -4,6 +4,7 @@
  */
 package com.anantoni.freshdirect.beans;
 
+import java.util.List;
 /**
  *
  * @author Lelouch
@@ -21,6 +22,8 @@ public class UserProfile implements java.io.Serializable {
     private int postCode;
     private int creditLimit;
     private int currentBalance;
+    private List<Long> cardList;
+    private List<Supplier> supplierList;
     
         
     public UserProfile() {
@@ -193,5 +196,33 @@ public class UserProfile implements java.io.Serializable {
      */
     public void setRole(String role) {
         this.role = role;
+    }
+
+    /**
+     * @return the cardList
+     */
+    public List<Long> getCardList() {
+        return cardList;
+    }
+
+    /**
+     * @param cardList the cardList to set
+     */
+    public void setCardList(List<Long> cardList) {
+        this.cardList = cardList;
+    }
+
+    /**
+     * @return the supplierList
+     */
+    public List<Supplier> getSupplierList() {
+        return supplierList;
+    }
+
+    /**
+     * @param supplierList the supplierList to set
+     */
+    public void setSupplierList(List<Supplier> supplierList) {
+        this.supplierList = supplierList;
     }
 }

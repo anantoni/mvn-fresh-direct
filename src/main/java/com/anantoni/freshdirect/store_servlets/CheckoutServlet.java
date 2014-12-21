@@ -45,6 +45,15 @@ public class CheckoutServlet extends HttpServlet {
             String[] pIDs = request.getParameterValues("product_ids");
             String[] pListPrices = request.getParameterValues("product_list_prices");
             String[] pQuantities = request.getParameterValues("product_quantities");
+            String oldCreditCardNumber = request.getParameter("old_credit_card");
+            String newCreditCardNumber = request.getParameter("new_credit_card");
+            String creditCardNumber;
+            
+            if (!newCreditCardNumber.equals(""))
+                creditCardNumber = newCreditCardNumber;
+            else
+                creditCardNumber = oldCreditCardNumber;
+            
             HttpSession session = request.getSession(true);
             
             UserProfile userProfile = (UserProfile)session.getAttribute("userProfile");
@@ -52,7 +61,7 @@ public class CheckoutServlet extends HttpServlet {
             DatabaseManager dbManager = new DatabaseManager();
             int totalCost = cart.getTotalCost();
             
-            if (dbManager.checkout(userProfile, pIDs, pQuantities, pListPrices, totalCost)) {
+            if (dbManager.checkout(userProfile, pIDs, pQuantities, pListPrices, totalCost, creditCardNumber)) {
                 session.setAttribute("shoppingCart", new Cart());
                 String redirectURL = response.encodeRedirectURL("user_profile.html");
                 response.sendRedirect(redirectURL);

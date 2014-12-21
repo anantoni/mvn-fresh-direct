@@ -39,10 +39,19 @@ public class DegreeOfSeparationBetweenTwoSuppliersServlet extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         DatabaseManager dbManager = new DatabaseManager();
-        List<Product> productList = dbManager.neverOrderedProducts();
+        int supplier1 = Integer.parseInt(request.getParameter("supplier1"));
+        int supplier2 = Integer.parseInt(request.getParameter("supplier2"));
+        int degree = dbManager.sixDegreesOfSeparation(supplier1, supplier2);
         
-        request.setAttribute("productList", productList);
-        RequestDispatcher rd = request.getRequestDispatcher(response.encodeURL("never_ordered_products.html"));
+        String degreeMessage;
+        
+        if (degree < 7)
+            degreeMessage = "Degree of separation: " + degree;
+        else
+            degreeMessage = "No degree of separation found within six degrees";
+        
+        request.setAttribute("degreeOfSeparation", degreeMessage);
+        RequestDispatcher rd = request.getRequestDispatcher(response.encodeURL("degree_of_separation.html"));
         rd.forward(request, response);
     }
 

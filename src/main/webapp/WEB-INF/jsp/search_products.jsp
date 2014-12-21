@@ -12,30 +12,37 @@
         <title>Product Search</title>
 
         <%@ include file="../layout/header.jsp" %>
-        <form class="search_form" action="SearchProductServlet" method="get">
-        <div class="product_section">
-            <label for="product_name"> Product Name: </label>
-            <input autofocus type="search" name="product_name"/>
+        <form class="form-inline" action="SearchProductServlet" method="get">
+            <label class="control-label" for="product_name"> Product Name: </label>
+            <input autofocus class="form-control"  type="search" name="product_name"/>
             <br>
-            <label for="product_description"> Product Description: </label>
-            <input type="search" name="product_description"/>
-        </div>
-        <div class="product_category_section">
-            <label for="product_category"> Product Category: </label>
-            <input type="radio" name="product_category" value="A" checked>Any
-            <input type="radio" name="product_category" value="V">Vegetable and Fruits
-            <input type="radio" name="product_category" value="M">Meat and Dairy Products
-            <input type="radio" name="product_category" value="C">Chemical Products
-            <input type="radio" name="product_category" value="I">Industrial Products
-            <input type="radio" name="product_category" value="B">Boxed/Canned Products
-            <input type="radio" name="product_category" value="G">Garden Products
-            <input type="radio" name="product_category" value="H">Household Products
-        </div>
-        <div class="supplier_section">
-            <label for="supplier_name"> Supplier Name: </label>
-            <input type="search" name="supplier_name"/>
-        </div>
-            <input type="submit" value="Submit"> 
+            <label class="control-label" for="product_description"> Product Description: </label>
+            <input type="search" class="form-control" name="product_description"/>
+            <br>
+            <label class="control-label" for="product_category"> Product Category: </label>
+            <select name="product_category" id="inputProductCategory" class="form-control">
+                <option value="A">Any</option>
+                <option value="V">Vegetable and Fruits</option>
+                <option value="M">Meat and Dairy Products</option>
+                <option value="C">Chemical Products</option>
+                <option value="I">Industrial Products</option>
+                <option value="B">Boxed/Canned Products</option>
+                <option value="G">Garden Products</option>
+                <option value="H">Household Products</option>
+            </select>
+        
+            <br>
+            <c:if test="${sessionScope.userProfile != null}">
+                <label class="control-label" for="inputSupplier"> Supplier Name: </label>
+                <select name="supplier_name" id="inputSupplier" class="form-control">
+                <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
+                    <option value="<c:out value="${supplier.supplierID}"/>"><c:out value="${supplier.supplierName}"/></option>
+                </c:forEach>
+                </select>
+                
+            </c:if>
+                <br>
+            <button type="submit" class="btn btn-default">Search</button>
             
         </form>
         <%@ include file="../layout/footer.jsp" %>

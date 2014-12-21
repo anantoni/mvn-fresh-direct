@@ -15,3 +15,7 @@ $(function(){
      clearBtn: true
     });
 });
+
+$(function(){
+    $('.selectpicker').selectpicker();    
+});

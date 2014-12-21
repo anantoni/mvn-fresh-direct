@@ -46,8 +46,22 @@
 
     <form action="DegreeOfSeparationBetweenTwoSuppliersServlet" method="get" class="form-inline" role="form">
         <label for="inputSupplier1" class="col-sm-4 control-label">Query the degree of separation between supplier #1 and supplier #2</label>
-        <input type="text" class="form-control" id="inputSupplier1" name="supplier1" placeholder="Supplier #1">
-        <input type="text" class="form-control" id="inputSupplier2" name="supplier2" placeholder="Supplier #2">
+        <c:if test="${sessionScope.userProfile != null}">
+                <label class="control-label" for="inputSupplier"> Supplier Name: </label>
+                <select type="text" class="form-control" id="inputSupplier1" name="supplier1" placeholder="Supplier #1">
+                <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
+                    <option value="<c:out value="${supplier.supplierID}"/>"><c:out value="${supplier.supplierName}"/></option>
+                </c:forEach>
+                </select>
+                
+                <label class="control-label" for="inputSupplier"> Supplier Name: </label>
+                <select type="text" class="form-control" id="inputSupplier2" name="supplier2" placeholder="Supplier #2">
+                <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
+                    <option value="<c:out value="${supplier.supplierID}"/>"><c:out value="${supplier.supplierName}"/></option>
+                </c:forEach>
+                </select>
+                
+            </c:if>
         <button type="submit" class="btn btn-default">Query</button>
     </form>
     <%@ include file="../layout/footer.jsp" %>
