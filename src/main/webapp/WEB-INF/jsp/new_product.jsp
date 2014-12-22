@@ -11,36 +11,43 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Register New Product</title>
         <%@ include file="../layout/header.jsp" %>
-        <form class="new_product_form" action="" method="get" name="search_form">
-        <div class="new_product_section">
-            <label for="product_name"> Product Name: </label>
-            <input autofocus type="text" name="product_name"/>
-            <br>
-            <label for="product_description"> Product Description: </label>
-            <input type="textarea" name="product_description" maxlength="512"/>
-            <br>
-            <label for="product_category"> Product Category: </label>
-            <input type="radio" name="product_category" value="V" checked>Vegetable and Fruits
-            <input type="radio" name="product_category" value="M">Meat and Dairy Products
-            <input type="radio" name="product_category" value="C">Chemical Products
-            <input type="radio" name="product_category" value="I">Industrial Products
-            <input type="radio" name="product_category" value="B">Boxed/Canned Products
-            <input type="radio" name="product_category" value="G">Garden Products
-            <input type="radio" name="product_category" value="H">Household Products
-            <br>
-            <label for="product_quantity"> Product Quantity: </label>
-            <input type="number" name="product_quantity" min="0" max="999" step="1"/>
-            <br>
-            <label for="product_quantity"> Product Procurement Level: </label>
-            <input type="number" name="product_procurment_level" min="0" max="999" step="1"/>
-            <br>
-            <label for="product_quantity"> Product Procurement Quantity: </label>
-            <input type="number" name="product_procurement_quantity" min="0" max="999" step="1"/>
-            <br>
-            <label for="supplier_name"> Supplier Name: </label>
-            <input type="search" name="supplier_name"/>     
-            <br>
-            <input type="submit" value="Submit">            
+        <form class="form-horizontal" action="AddNewProductServlet" method="get" role="form">
+        <div class="form-group">
+            <label class="col-sm-4 control-label" for="product_name">Product Name:</label>
+            <input autofocus class="form-control" type="search" name="product_name"/>
+            
+            <label class="col-sm-4 control-label" for="product_description">Product Description:</label>
+            <input type="search" class="form-control" name="product_description"/>
+            
+            <label class="col-sm-4 control-label" for="product_category">Product Category:</label>
+            <select name="product_category" id="inputProductCategory" class="form-control">
+                <option value="1">Vegetable and Fruits</option>
+                <option value="2">Meat and Dairy Products</option>
+                <option value="3">Chemical Products</option>
+                <option value="4">Industrial Products</option>
+                <option value="5">Boxed/Canned Products</option>
+                <option value="6">Garden Products</option>
+                <option value="7">Household Products</option>
+            </select>
+       
+            <label class="col-sm-4 control-label" for="list_price">List Price: </label>
+            <input class="form-control" type="number" name="list_price" min="1" max="5000" step="1"/>
+            
+            <label class="col-sm-4 control-label" for="product_quantity"> Product Quantity: </label>
+            <input class="form-control" type="number" name="product_quantity" min="0" max="999" step="1"/>
+            
+            <label class="col-sm-4 control-label" for="product_procurement_level"> Product Procurement Level: </label>
+            <input class="form-control" type="number" name="product_procurement_level" min="0" max="999" step="1"/>
+            
+            <label class="col-sm-4 control-label" for="product_procurement_quantity"> Product Procurement Quantity: </label>
+            <input class="form-control" type="number" name="product_procurement_quantity" min="0" max="999" step="1"/>
+            <label class="col-sm-4 control-label" for="supplier_name"> Supplier: </label>
+            <select name="supplier_name" id="inputSupplier" class="form-control">
+                <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
+                    <option value="<c:out value="${supplier.ID}"/>"><c:out value="${supplier.name}"/></option>
+                </c:forEach>
+            </select>     
+            <button type="submit" class="btn btn-default">Add New Product</button>            
         </div>
         </form>
         <%@ include file="../layout/footer.jsp" %>

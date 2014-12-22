@@ -10,50 +10,67 @@ package com.anantoni.freshdirect.beans;
  * @author anantoni
  */
 public class Supplier implements java.io.Serializable {
-    private int supplierID;
-    private String supplierName;
-    private String supplierEmail;
+    private int ID;
+    private String Name;
+    private String Email;
+    private int totalAmountSupplied;
+
+    
 
     /**
-     * @return the supplierID
+     * @return the totalAmountSupplied
      */
-    public int getSupplierID() {
-        return supplierID;
+    public int getTotalAmountSupplied() {
+        return totalAmountSupplied;
     }
 
     /**
-     * @param supplierID the supplierID to set
+     * @param totalAmountSupplied the totalAmountSupplied to set
      */
-    public void setSupplierID(int supplierID) {
-        this.supplierID = supplierID;
+    public void setTotalAmountSupplied(int totalAmountSupplied) {
+        this.totalAmountSupplied = totalAmountSupplied;
     }
 
     /**
-     * @return the supplierName
+     * @return the ID
      */
-    public String getSupplierName() {
-        return supplierName;
+    public int getID() {
+        return ID;
     }
 
     /**
-     * @param supplierName the supplierName to set
+     * @param ID the ID to set
      */
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     /**
-     * @return the supplierEmail
+     * @return the Name
      */
-    public String getSupplierEmail() {
-        return supplierEmail;
+    public String getName() {
+        return Name;
     }
 
     /**
-     * @param supplierEmail the supplierEmail to set
+     * @param Name the Name to set
      */
-    public void setSupplierEmail(String supplierEmail) {
-        this.supplierEmail = supplierEmail;
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    /**
+     * @return the Email
+     */
+    public String getEmail() {
+        return Email;
+    }
+
+    /**
+     * @param Email the Email to set
+     */
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
     
     

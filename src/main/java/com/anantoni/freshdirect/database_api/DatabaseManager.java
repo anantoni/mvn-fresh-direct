@@ -15,7 +15,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +27,7 @@ import java.util.List;
  */
 public class DatabaseManager {
 
-    Connection SQLcon;
+    private Connection SQLcon;
 
     public DatabaseManager() throws ClassNotFoundException, SQLException {
         //Connect to sql server
@@ -46,7 +49,7 @@ public class DatabaseManager {
 
     public int checkUserExistence(int user_id) throws SQLException {
         //Check for user existence based on user id
-        PreparedStatement s = SQLcon.prepareStatement("SELECT user_id FROM USERS WHERE user_id = ?");
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT user_id FROM USERS WHERE user_id = ?");
         s.setInt(1, user_id);
         s.executeQuery();
         ResultSet rs = s.getResultSet();
@@ -62,7 +65,7 @@ public class DatabaseManager {
 
     public boolean checkUsernameAvailability(String username) throws SQLException {
         //Check username availability
-        PreparedStatement s = SQLcon.prepareStatement("SELECT login_name FROM USERS WHERE login_name = ?");
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT login_name FROM USERS WHERE login_name = ?");
         s.setString(1, username);
         s.executeQuery();
         ResultSet rs = s.getResultSet();
@@ -78,7 +81,7 @@ public class DatabaseManager {
 
     public boolean checkEmailAvailability(String email) throws SQLException {
         //Check email availability
-        PreparedStatement s = SQLcon.prepareStatement("SELECT email FROM USERS WHERE email = ?");
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT email FROM USERS WHERE email = ?");
         s.setString(1, email);
         s.executeQuery();
         ResultSet rs = s.getResultSet();
@@ -95,15 +98,15 @@ public class DatabaseManager {
     public List<Supplier> getSuppliers() throws SQLException {
         List<Supplier> supplierList = new ArrayList<>();
         
-        PreparedStatement s = SQLcon.prepareStatement("SELECT * FROM SUPPLIERS");
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT * FROM SUPPLIERS GROUP BY supplier_id");
         
         ResultSet rs = s.executeQuery();
         
         while (rs.next()) {
             Supplier supplier = new Supplier();
-            supplier.setSupplierID(rs.getInt("supplier_id"));
-            supplier.setSupplierName(rs.getString("supplier_name"));
-            supplier.setSupplierEmail(rs.getString("email"));
+            supplier.setID(rs.getInt("supplier_id"));
+            supplier.setName(rs.getString("supplier_name"));
+            supplier.setEmail(rs.getString("email"));
             supplierList.add(supplier);
         }
         
@@ -115,7 +118,7 @@ public class DatabaseManager {
             throws SQLException 
     {
         //Check if town exists in TOWN
-        PreparedStatement s = SQLcon.prepareStatement("SELECT town_id FROM TOWNS WHERE town_name = ?");
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT town_id FROM TOWNS WHERE town_name = ?");
         
         s.setString(1, town);
         s.executeQuery();
@@ -131,7 +134,7 @@ public class DatabaseManager {
         
         //If not exists insert to TOWN table
         if (townID == -1) {
-            s = SQLcon.prepareStatement("INSERT INTO TOWNS("
+            s = getSQLcon().prepareStatement("INSERT INTO TOWNS("
                     + "town_name)"
                     + "VALUES(?)", Statement.RETURN_GENERATED_KEYS);
             s.setString(1, town);
@@ -147,7 +150,7 @@ public class DatabaseManager {
         }
         
         //Check if street exists in STREET
-        s = SQLcon.prepareStatement("SELECT street_id FROM STREETS WHERE street_name = ?");
+        s = getSQLcon().prepareStatement("SELECT street_id FROM STREETS WHERE street_name = ?");
         s.setString(1, street);
         s.executeQuery();
         rs = s.getResultSet();
@@ -162,7 +165,7 @@ public class DatabaseManager {
         
         //If not exists insert to STREET table
         if (streetID == -1) {
-            s = SQLcon.prepareStatement("INSERT INTO STREETS("
+            s = getSQLcon().prepareStatement("INSERT INTO STREETS("
                     + "street_name)"
                     + "VALUES(?)", Statement.RETURN_GENERATED_KEYS);
             s.setString(1, street);
@@ -178,7 +181,7 @@ public class DatabaseManager {
         }
         
         //Check if address combination exists in ADDRESS table
-        s = SQLcon.prepareStatement("SELECT address_id FROM ADDRESSES WHERE town_id = ? AND street_id = ?" +
+        s = getSQLcon().prepareStatement("SELECT address_id FROM ADDRESSES WHERE town_id = ? AND street_id = ?" +
                 " AND street_number = ? AND post_code = ?");
         
         s.setInt(1, townID);
@@ -198,7 +201,7 @@ public class DatabaseManager {
         
         //If not exists insert to ADDRESS table
         if (addressID == -1) {
-            s = SQLcon.prepareStatement("INSERT INTO ADDRESSES("
+            s = getSQLcon().prepareStatement("INSERT INTO ADDRESSES("
                     + "town_id, street_id, street_number, post_code)"
                     + "VALUES(?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             
@@ -218,7 +221,7 @@ public class DatabaseManager {
         }
         
         //Insert user to USER table
-        s = SQLcon.prepareStatement("INSERT INTO USERS("
+        s = getSQLcon().prepareStatement("INSERT INTO USERS("
                 + "login_name, password, email, first_name, last_name, address_id, credit_limit, current_balance)"
                 + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
         
@@ -244,7 +247,7 @@ public class DatabaseManager {
     }
     
     public UserProfile getProfileData(int user_id) throws SQLException {
-        PreparedStatement s = SQLcon.prepareStatement("SELECT * FROM FULL_USER_PROFILE WHERE user_id = ?");
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT * FROM FULL_USER_PROFILE WHERE user_id = ?");
         s.setInt(1, user_id);
         s.executeQuery();
 
@@ -274,7 +277,7 @@ public class DatabaseManager {
     public UserProfile login(String username, String password) throws SQLException {
         UserProfile userProfile = null;
 
-        PreparedStatement s = SQLcon.prepareStatement("SELECT * FROM FULL_USER_PROFILE WHERE login_name = ? AND password = ?");
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT * FROM FULL_USER_PROFILE WHERE login_name = ? AND password = ?");
         s.setString(1, username);
         s.setString(2, password);
         ResultSet rs = s.executeQuery();
@@ -295,7 +298,7 @@ public class DatabaseManager {
             userProfile.setPostCode(rs.getInt("post_code"));
             rs.close();
             s.close();
-            s = SQLcon.prepareStatement("SELECT * FROM MANAGERS WHERE user_id = ?");
+            s = getSQLcon().prepareStatement("SELECT * FROM MANAGERS WHERE user_id = ?");
             s.setInt(1, userID);
             rs = s.executeQuery();
             if (rs.next())
@@ -305,7 +308,7 @@ public class DatabaseManager {
             rs.close();
             s.close();
             
-            s = SQLcon.prepareStatement("SELECT DISTINCT(cc.credit_card_number) AS credit_card_number FROM USERS AS u, ORDERS AS o, ORDERED_WITH_CREDIT_CARD AS owcc, CREDIT_CARDS AS cc" +
+            s = getSQLcon().prepareStatement("SELECT DISTINCT(cc.credit_card_number) AS credit_card_number FROM USERS AS u, ORDERS AS o, ORDERED_WITH_CREDIT_CARD AS owcc, CREDIT_CARDS AS cc" +
             " WHERE u.user_id = ?" +
             " AND o.customer_id = u.user_id" +
             " AND o.order_id = owcc.order_id" +
@@ -327,7 +330,7 @@ public class DatabaseManager {
     
     public List<Product> getProductsByCategory(char category) throws SQLException {
         
-        PreparedStatement s = SQLcon.prepareStatement("SELECT "
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT "
         + "product_id, p.name, description, product_group, list_price, available_quantity, procurement_level, procurement_quantity "
         + "FROM PRODUCTS AS p, PRODUCT_GROUPS AS pg "
         + "WHERE p.product_group = pg.product_group_id AND pg.name = ?");
@@ -354,8 +357,8 @@ public class DatabaseManager {
     public boolean checkout(UserProfile userProfile, String[] pIDs, String[] pQuantities, String[] pListPrices, int totalCost, String creditCardNumber) throws SQLException {
         int userID = userProfile.getUserID();
         int orderID = -1;
-        SQLcon.setAutoCommit(false);
-        PreparedStatement s = SQLcon.prepareStatement("SELECT credit_limit, current_balance FROM USERS WHERE user_id = ?");
+        getSQLcon().setAutoCommit(false);
+        PreparedStatement s = getSQLcon().prepareStatement("SELECT credit_limit, current_balance FROM USERS WHERE user_id = ?");
         s.setInt(1, userID);
         ResultSet rs = s.executeQuery();
               
@@ -366,12 +369,12 @@ public class DatabaseManager {
             s.close();
             
             if (currentBalance + totalCost <= creditLimit) {
-                s = SQLcon.prepareStatement("UPDATE USERS SET current_balance = ? WHERE user_id = ?");
+                s = getSQLcon().prepareStatement("UPDATE USERS SET current_balance = ? WHERE user_id = ?");
                 s.setInt(1, currentBalance + totalCost);
                 s.setInt(2, userID);
                 s.executeUpdate();
                 
-                s = SQLcon.prepareStatement("INSERT INTO ORDERS(order_date, customer_id, total_cost) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                s = getSQLcon().prepareStatement("INSERT INTO ORDERS(order_date, customer_id, total_cost) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 s.setDate(1, new java.sql.Date(System.currentTimeMillis()));
                 s.setInt(2, userID);
                 s.setInt(3, totalCost);
@@ -399,7 +402,7 @@ public class DatabaseManager {
             int productID = Integer.parseInt(pIDs[i]);
             int productQuantity = Integer.parseInt(pQuantities[i]);
             int productPrice = Integer.parseInt(pListPrices[i]);
-            s = SQLcon.prepareStatement("SELECT available_quantity, procurement_level FROM PRODUCTS WHERE product_id = ?");
+            s = getSQLcon().prepareStatement("SELECT available_quantity, procurement_level FROM PRODUCTS WHERE product_id = ?");
             s.setInt(1, productID);
             rs = s.executeQuery();
             
@@ -408,14 +411,14 @@ public class DatabaseManager {
                 int procurementLevel = rs.getInt("procurement_level");
                 if (productQuantity <= availableQuantity) {
                     if (availableQuantity - productQuantity <= procurementLevel)
-                        s = SQLcon.prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 1 WHERE product_id = ?");
+                        s = getSQLcon().prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 1 WHERE product_id = ?");
                     else
-                        s = SQLcon.prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 0 WHERE product_id = ?");
+                        s = getSQLcon().prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 0 WHERE product_id = ?");
                     s.setInt(1, availableQuantity - productQuantity);
                     s.setInt(2, productID);
                     s.executeUpdate();
                     
-                    s = SQLcon.prepareStatement("INSERT INTO ORDER_DETAILS(order_id, product_id, order_quantity, order_sum) VALUES(?, ?, ?, ?)");
+                    s = getSQLcon().prepareStatement("INSERT INTO ORDER_DETAILS(order_id, product_id, order_quantity, order_sum) VALUES(?, ?, ?, ?)");
                     s.setInt(1, orderID);
                     s.setInt(2, productID);
                     s.setInt(3, productQuantity);
@@ -435,7 +438,7 @@ public class DatabaseManager {
             }
         }
         //Check if credit card number exists in CREDIT_CARDS table
-        s = SQLcon.prepareStatement("SELECT credit_card_id FROM CREDIT_CARDS WHERE credit_card_number = ?");
+        s = getSQLcon().prepareStatement("SELECT credit_card_id FROM CREDIT_CARDS WHERE credit_card_number = ?");
         s.setLong(1, Long.parseLong(creditCardNumber));
         rs = s.executeQuery();
         
@@ -449,7 +452,7 @@ public class DatabaseManager {
         
         //If not exists insert to CREDITS_CARDS table
         if (creditCardID == -1) {
-            s = SQLcon.prepareStatement("INSERT INTO CREDIT_CARDS("
+            s = getSQLcon().prepareStatement("INSERT INTO CREDIT_CARDS("
                     + "credit_card_number)"
                     + "VALUES(?)", Statement.RETURN_GENERATED_KEYS);
             s.setLong(1, Long.parseLong(creditCardNumber));
@@ -464,19 +467,20 @@ public class DatabaseManager {
             }
         }
         
-        s = SQLcon.prepareStatement("INSERT INTO ORDERED_WITH_CREDIT_CARD(order_id, credit_card_id) VALUES(?, ?)");
+        s = getSQLcon().prepareStatement("INSERT INTO ORDERED_WITH_CREDIT_CARD(order_id, credit_card_id) VALUES(?, ?)");
         s.setInt(1, orderID);
         s.setInt(2, creditCardID);
         s.executeUpdate();
         
-        SQLcon.commit();
+        getSQLcon().commit();
+        getSQLcon().setAutoCommit(true);
         return true;
     }
     
     public List<Product> bestSellingProduct() throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.bestSellingProducts()}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.bestSellingProducts()}");
         ResultSet rs = cs.executeQuery();
 
         while (rs.next()) {
@@ -502,7 +506,7 @@ public class DatabaseManager {
     public List<Product> neverOrderedProducts() throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.neverOrderedProducts()}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.neverOrderedProducts()}");
         ResultSet rs = cs.executeQuery();
 
         while (rs.next()) {
@@ -526,7 +530,7 @@ public class DatabaseManager {
     public List<Product> mostExpensiveProductsPerGroup() throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.mostExpensiveProductPerGroup()}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.mostExpensiveProductPerGroup()}");
         ResultSet rs = cs.executeQuery();
 
         while (rs.next()) {
@@ -550,7 +554,7 @@ public class DatabaseManager {
     public List<Product> orderSumMinMaxPerProduct() throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.orderSumMinMaxPerProduct()}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.orderSumMinMaxPerProduct()}");
         ResultSet rs = cs.executeQuery();
 
         while (rs.next()) {
@@ -576,7 +580,7 @@ public class DatabaseManager {
     public List<Integer> daysGreaterThan10k(String month, String year) throws SQLException {
         List<Integer> dayList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.daysGreaterThan10k(?, ?)}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.daysGreaterThan10k(?, ?)}");
         cs.setInt(1, Integer.parseInt(month));
         cs.setInt(2, Integer.parseInt(year));
         ResultSet rs = cs.executeQuery();
@@ -593,7 +597,7 @@ public class DatabaseManager {
     public List<Product> productsNotOrderedInMonthOfYear(String month, String year) throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.productsNotOrderedInMonthOfYear(?, ?)}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.productsNotOrderedInMonthOfYear(?, ?)}");
         cs.setInt(1, Integer.parseInt(month));
         cs.setInt(2, Integer.parseInt(year));
         
@@ -620,7 +624,7 @@ public class DatabaseManager {
     public int sixDegreesOfSeparation(int supplier1, int supplier2) throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.sixDegreesOfSeparation(?, ?, ?)}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.sixDegreesOfSeparation(?, ?, ?)}");
         cs.setInt(1, supplier1);
         cs.setInt(2, supplier2);
         cs.registerOutParameter(3, java.sql.Types.INTEGER);
@@ -636,7 +640,7 @@ public class DatabaseManager {
     public List<Product> searchProduct(String product_name, String product_description, String product_group_name, String supplier_name) throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = SQLcon.prepareCall("{call fd_schema.searchProducts(?, ?, ?, ?)}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.searchProducts(?, ?, ?, ?)}");
         if (product_name.equals(""))
             cs.setObject(1, null);
         else
@@ -676,6 +680,81 @@ public class DatabaseManager {
         return productList;
     }
     
+    public List<Product> mostPopularProducts(int limit) throws SQLException{
+        List<Product> productList = new ArrayList<>();
+        
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.mostPopularProducts(?, ?)}");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        cs.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+        cs.setInt(2, limit);
+        ResultSet rs = cs.executeQuery();
+        
+        while (rs.next()) {
+            Product product = new Product();
+            product.setProductID(rs.getInt("product_id"));
+            product.setName(rs.getString("product_name"));
+            product.setDescription(rs.getString("description"));
+            product.setListPrice(rs.getInt("list_price"));
+            product.setAvailableQuantity(rs.getInt("available_quantity"));
+            product.setProcurementLevel(rs.getInt("procurement_level"));
+            product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+            product.setProcurementLevelReached(rs.getInt("procurement_level_reached"));
+            productList.add(product);
+        }
+        rs.close();
+        cs.close();
+        
+        return productList;
+    }
+    
+    public List<Supplier> mostPopularSuppliers(int limit) throws SQLException {
+        List<Supplier> supplierList = new ArrayList<>();
+        
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.mostPopularSuppliers(?)}");
+        cs.setInt(1, limit);
+        ResultSet rs = cs.executeQuery();
+        
+        while (rs.next()) {
+            Supplier supplier = new Supplier();
+            supplier.setID(rs.getInt("supplier_id"));
+            supplier.setName(rs.getString("supplier_name"));
+            supplier.setEmail(rs.getString("email"));
+            supplier.setTotalAmountSupplied(rs.getInt("total_amount_supplied"));
+            supplierList.add(supplier);
+        }
+        return supplierList;
+    }
+    
+    public List<Integer> mostPopularPostCodes(int limit) throws SQLException {
+        List<Integer> postCodeList = new ArrayList<>();
+        
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.mostPopularPostCodes(?)}");
+        cs.setInt(1, limit);
+        ResultSet rs = cs.executeQuery();
+        
+        while (rs.next()) {
+            postCodeList.add(rs.getInt("post_code"));
+        }
+        return postCodeList;
+    }
+    
+    public List<UserProfile> topClients(int limit) throws SQLException {
+        List<UserProfile> clientList = new ArrayList<>();
+        
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.topClients(?)}");
+        cs.setInt(1, limit);
+        ResultSet rs = cs.executeQuery();
+        
+        while (rs.next()) {
+            UserProfile client = new UserProfile();
+            client.setUserID(rs.getInt("customer_id"));
+            client.setTotalAmountSpent(rs.getInt("total_cost"));
+            clientList.add(client);
+        }
+        return clientList;
+    }
+    
     public List<Product> suggestProducts(int product_id) throws SQLException{
         List<Product> productList = new ArrayList<>();
         
@@ -701,7 +780,77 @@ public class DatabaseManager {
         return productList;
     }
     
-    
+    public boolean insertNewProduct(Product product, int supplierID) throws SQLException {
+        PreparedStatement s = getSQLcon().prepareStatement("INSERT INTO PRODUCTS(" +
+                "name, description, product_group, list_price, available_quantity, procurement_level, procurement_quantity, procurement_level_reached)"+
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        s.setString(1, product.getName());
+        s.setString(2, product.getDescription());
+        s.setInt(3, product.getProductGroupID());
+        s.setInt(4, product.getListPrice());
+        s.setInt(5, product.getAvailableQuantity());
+        s.setInt(6, product.getProcurementLevel());
+        s.setInt(7, product.getProcurementQuantity());
+        s.setInt(8, 0);
+        
+        s.executeUpdate();
+        ResultSet rs = s.getGeneratedKeys();
+        
+        if (rs.next()) {
+            int productID = rs.getInt(1);
+            rs.close();
+            s.close();
+            s = getSQLcon().prepareStatement("SELECT * FROM SUPPLIERS WHERE supplier_id = ? LIMIT 1");
+            s.setInt(1, supplierID);
+            rs = s.executeQuery();
+            
+            if (rs.next()) {
+                Supplier supplier = new Supplier();
+                supplier.setID(supplierID);
+                supplier.setEmail(rs.getString("email"));
+                supplier.setName(rs.getString("supplier_name"));
+                
+                rs.close();
+                s.close();
+
+                s = getSQLcon().prepareStatement("INSERT INTO SUPPLIERS(" + 
+                        "supplier_id, product_id, supplier_name, email, supplied_quantity) " +
+                        "VALUES(?, ?, ?, ?, ?)");
+                s.setInt(1, supplierID);
+                s.setInt(2, productID);
+                s.setString(3, supplier.getName());
+                s.setString(4, supplier.getEmail());
+                s.setInt(5, product.getAvailableQuantity());
+                s.executeUpdate();
+            }
+            else {
+                rs.close();
+                s.close();
+            }            
+        }
+        else {
+            rs.close();
+            s.close();
+            return false;
+        }
+        rs.close();
+        s.close();
+        return true;
+    }
+
+    /**
+     * @return the SQLcon
+     */
+    public Connection getSQLcon() {
+        return SQLcon;
+    }
+
+    /**
+     * @param SQLcon the SQLcon to set
+     */
+    public void setSQLcon(Connection SQLcon) {
+        this.SQLcon = SQLcon;
+    }
     
     
 }

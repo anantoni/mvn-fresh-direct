@@ -64,6 +64,10 @@
         <servlet-name>StatisticsAndAwardsServlet</servlet-name>
         <servlet-class>com.anantoni.freshdirect.store_servlets.StatisticsAndAwardsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewProductServlet</servlet-name>
+        <servlet-class>com.anantoni.freshdirect.store_servlets.AddNewProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.html</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>StatisticsAndAwardsServlet</servlet-name>
         <url-pattern>/StatisticsAndAwardsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewProductServlet</servlet-name>
+        <url-pattern>/AddNewProductServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

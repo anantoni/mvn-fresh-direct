@@ -6,26 +6,22 @@
 package com.anantoni.freshdirect.store_servlets;
 
 import com.anantoni.freshdirect.beans.Product;
-import com.anantoni.freshdirect.beans.Supplier;
-import com.anantoni.freshdirect.beans.UserProfile;
-import com.anantoni.freshdirect.database_api.DatabaseManager;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.anantoni.freshdirect.database_api.DatabaseManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author anantoni
  */
-public class StatisticsAndAwardsServlet extends HttpServlet {
+public class AddNewProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -41,34 +37,30 @@ public class StatisticsAndAwardsServlet extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String mostPopularProductsLimit = request.getParameter("popularProductsLimit");
-            String mostPopularSuppliersLimit = request.getParameter("popularSuppliersLimit");
-            String mostPopularPostCodesLimit = request.getParameter("popularPostCodesLimit");
-            String topClientsLimit = request.getParameter("topClientsLimit");
+            String productName = request.getParameter("product_name");
+            String productDescription = request.getParameter("product_description");
+            int productCategory = Integer.parseInt(request.getParameter("product_category"));
+            int productQuantity = Integer.parseInt(request.getParameter("product_quantity"));
+            int productProcurementLevel = Integer.parseInt(request.getParameter("product_procurement_level"));
+            int productProcurementQuantity = Integer.parseInt(request.getParameter("product_procurement_quantity"));
+            int listPrice = Integer.parseInt(request.getParameter("list_price"));
+            int supplierID = Integer.parseInt(request.getParameter("supplier_name"));
             
-            DatabaseManager dbManager = new DatabaseManager(1);
-            if (mostPopularProductsLimit != null && !mostPopularProductsLimit.equals("")) {
-                int limit = Integer.parseInt(mostPopularProductsLimit);
-                List<Product> productList = dbManager.mostPopularProducts(limit);
-                request.setAttribute("productList", productList);
-            }
-            else if (mostPopularSuppliersLimit != null && !mostPopularSuppliersLimit.equals("")) {
-                int limit = Integer.parseInt(mostPopularSuppliersLimit);
-                List<Supplier> supplierList = dbManager.mostPopularSuppliers(limit);
-                request.setAttribute("supplierList", supplierList);
-            }
-            else if (mostPopularPostCodesLimit != null && !mostPopularPostCodesLimit.equals("")) {
-                int limit = Integer.parseInt(mostPopularPostCodesLimit);
-                List<Integer> postCodeList = dbManager.mostPopularPostCodes(limit);
-                request.setAttribute("postCodeList", postCodeList);
-            }
-            else if (topClientsLimit != null && !topClientsLimit.equals("")) {
-                int limit = Integer.parseInt(topClientsLimit);
-                List<UserProfile> clientList = dbManager.topClients(limit);
-                request.setAttribute("clientList", clientList);
-            }
-            RequestDispatcher rd = request.getRequestDispatcher(response.encodeURL("statistics_and_awards_results.html"));
-            rd.forward(request, response);
+            Product product = new Product();
+            product.setName(productName);
+            product.setDescription(productDescription);
+            product.setProductGroupID(productCategory);
+            product.setAvailableQuantity(productQuantity);
+            product.setProcurementQuantity(productProcurementQuantity);
+            product.setProcurementLevel(productProcurementLevel);
+            product.setProcurementQuantity(productProcurementQuantity);
+            product.setListPrice(listPrice);
+            
+            
+            DatabaseManager dbManager = new DatabaseManager();
+            out.println(supplierID);
+            if (dbManager.insertNewProduct(product, supplierID) == false)
+                out.println("error");
         }
     }
 
@@ -87,7 +79,7 @@ public class StatisticsAndAwardsServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(StatisticsAndAwardsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddNewProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -105,7 +97,7 @@ public class StatisticsAndAwardsServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(StatisticsAndAwardsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AddNewProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

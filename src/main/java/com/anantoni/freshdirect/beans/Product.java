@@ -14,6 +14,7 @@ public class Product implements java.io.Serializable {
     private String name;
     private String description;
     private char productGroup;
+    private int productGroupID;
     private int listPrice;
     private int availableQuantity;
     private int procurementLevel;
@@ -196,6 +197,20 @@ public class Product implements java.io.Serializable {
      */
     public void setMaxOrderSum(int maxOrderSum) {
         this.maxOrderSum = maxOrderSum;
+    }
+
+    /**
+     * @return the productGroupID
+     */
+    public int getProductGroupID() {
+        return productGroupID;
+    }
+
+    /**
+     * @param productGroupID the productGroupID to set
+     */
+    public void setProductGroupID(int productGroupID) {
+        this.productGroupID = productGroupID;
     }
     
     

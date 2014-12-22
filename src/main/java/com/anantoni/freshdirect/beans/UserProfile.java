@@ -22,13 +22,11 @@ public class UserProfile implements java.io.Serializable {
     private int postCode;
     private int creditLimit;
     private int currentBalance;
+    private int totalAmountSpent;
     private List<Long> cardList;
     private List<Supplier> supplierList;
     
-        
-    public UserProfile() {
-
-    }
+    public UserProfile() {}
 
     /**
      * @return the username
@@ -224,5 +222,19 @@ public class UserProfile implements java.io.Serializable {
      */
     public void setSupplierList(List<Supplier> supplierList) {
         this.supplierList = supplierList;
+    }
+
+    /**
+     * @return the totalAmountSpent
+     */
+    public int getTotalAmountSpent() {
+        return totalAmountSpent;
+    }
+
+    /**
+     * @param totalAmountSpent the totalAmountSpent to set
+     */
+    public void setTotalAmountSpent(int totalAmountSpent) {
+        this.totalAmountSpent = totalAmountSpent;
     }
 }

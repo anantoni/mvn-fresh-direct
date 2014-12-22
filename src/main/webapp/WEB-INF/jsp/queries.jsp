@@ -50,14 +50,14 @@
                 <label class="control-label" for="inputSupplier"> Supplier Name: </label>
                 <select type="text" class="form-control" id="inputSupplier1" name="supplier1" placeholder="Supplier #1">
                 <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
-                    <option value="<c:out value="${supplier.supplierID}"/>"><c:out value="${supplier.supplierName}"/></option>
+                    <option value="<c:out value="${supplier.ID}"/>"><c:out value="${supplier.name}"/></option>
                 </c:forEach>
                 </select>
                 
                 <label class="control-label" for="inputSupplier"> Supplier Name: </label>
                 <select type="text" class="form-control" id="inputSupplier2" name="supplier2" placeholder="Supplier #2">
                 <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
-                    <option value="<c:out value="${supplier.supplierID}"/>"><c:out value="${supplier.supplierName}"/></option>
+                    <option value="<c:out value="${supplier.ID}"/>"><c:out value="${supplier.name}"/></option>
                 </c:forEach>
                 </select>
                 
