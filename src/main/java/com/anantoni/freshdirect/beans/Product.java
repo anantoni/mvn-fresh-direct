@@ -5,6 +5,8 @@
  */
 package com.anantoni.freshdirect.beans;
 
+import java.util.Date;
+
 /**
  *
  * @author anantoni
@@ -23,6 +25,8 @@ public class Product implements java.io.Serializable {
     private int minOrderSum;
     private int maxOrderSum;
     private boolean procurementLevelReached;
+    private Date date;
+    private int orderQuantity;
 
     /**
      * @return the productID
@@ -211,6 +215,34 @@ public class Product implements java.io.Serializable {
      */
     public void setProductGroupID(int productGroupID) {
         this.productGroupID = productGroupID;
+    }
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    /**
+     * @return the orderQuantity
+     */
+    public int getOrderQuantity() {
+        return orderQuantity;
+    }
+
+    /**
+     * @param orderQuantity the orderQuantity to set
+     */
+    public void setOrderQuantity(int orderQuantity) {
+        this.orderQuantity = orderQuantity;
     }
     
     

@@ -837,6 +837,28 @@ public class DatabaseManager {
         s.close();
         return true;
     }
+    
+    public List<Product> getSalesHistory(int userID) throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        
+        PreparedStatement s = getSQLcon().prepareStatement(
+                 "SELECT o.order_date AS order_date, p.name AS product_name, od.order_quantity AS order_quantity" +
+                 " FROM ORDERS AS o, ORDER_DETAILS AS od, PRODUCTS AS p" +
+                 " WHERE o.order_id = od.order_id AND od.product_id = p.product_id AND o.customer_id = ?");
+        
+        s.setInt(1, userID);
+        ResultSet rs = s.executeQuery();
+        
+        while (rs.next()) {
+            Product product = new Product();
+            product.setDate(rs.getTimestamp("order_date"));
+            product.setName(rs.getString("product_name"));
+            product.setOrderQuantity(rs.getInt("order_quantity"));
+            productList.add(product);
+        }
+        
+        return productList;
+    }
 
     /**
      * @return the SQLcon

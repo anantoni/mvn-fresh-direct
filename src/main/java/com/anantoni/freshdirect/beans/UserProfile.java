@@ -25,6 +25,7 @@ public class UserProfile implements java.io.Serializable {
     private int totalAmountSpent;
     private List<Long> cardList;
     private List<Supplier> supplierList;
+    private List<Product> salesHistory;
     
     public UserProfile() {}
 
@@ -236,5 +237,19 @@ public class UserProfile implements java.io.Serializable {
      */
     public void setTotalAmountSpent(int totalAmountSpent) {
         this.totalAmountSpent = totalAmountSpent;
+    }
+
+    /**
+     * @return the salesHistory
+     */
+    public List<Product> getSalesHistory() {
+        return salesHistory;
+    }
+
+    /**
+     * @param salesHistory the salesHistory to set
+     */
+    public void setSalesHistory(List<Product> salesHistory) {
+        this.salesHistory = salesHistory;
     }
 }

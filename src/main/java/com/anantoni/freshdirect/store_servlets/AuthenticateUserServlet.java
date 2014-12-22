@@ -73,6 +73,7 @@ public class AuthenticateUserServlet extends HttpServlet {
                     session.setAttribute("shoppingCart", new Cart());
                     
                     userProfile.setSupplierList(dbManager.getSuppliers());
+                    userProfile.setSalesHistory(dbManager.getSalesHistory(userProfile.getUserID()));
                     session.setAttribute("userProfile", userProfile);
                     String redirectURL = response.encodeRedirectURL("user_profile.html");
                     response.sendRedirect(redirectURL);
