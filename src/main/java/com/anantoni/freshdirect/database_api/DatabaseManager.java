@@ -34,6 +34,15 @@ public class DatabaseManager {
         SQLcon = con;
         SQLcon.createStatement().execute("USE fd_schema;");
     }
+    
+    public DatabaseManager(int connection_type) throws ClassNotFoundException, SQLException {
+        //Connect to sql server
+        Class.forName("com.mysql.jdbc.Driver");
+        String connectionUrl = "jdbc:mysql://localhost/mysql?" + "user=" + "root" + "&password=" + "BlackCat13";
+        Connection con = DriverManager.getConnection(connectionUrl);
+        SQLcon = con;
+        SQLcon.createStatement().execute("USE fd_schema;");
+    }
 
     public int checkUserExistence(int user_id) throws SQLException {
         //Check for user existence based on user id
