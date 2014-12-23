@@ -13,7 +13,7 @@
         <%@ include file="../layout/header.jsp" %>
         <div class="container-fluid" align="center">
         <c:if test="${suggestionList!= null}">
-            <h1>Suggestions:</h1>
+            <legend><h1>Suggestions</h1></legend>>
         <c:forEach var="product" items="${suggestionList}">
         <div style="border: 2px solid; border-radius: 25px; padding: 10px" class="col-md-2">
             <c:out value="${product.name}"/> <br>
