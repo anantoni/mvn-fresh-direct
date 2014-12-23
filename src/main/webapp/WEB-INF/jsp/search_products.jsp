@@ -42,7 +42,20 @@
                 </select>
                 
             </c:if>
-                <br>
+            <br>
+            <label class="control-label" for="ordering"> Order by: </label>
+            <select name="order_by" id="inputSupplier" class="form-control">
+                <option value="1">Price</option>
+                <option value="2">Product Name</option>
+                <option value="3">Supplier Name</option>
+            </select>
+            <select name="ordering" id="inputSupplier" class="form-control">
+                <option value="1">Descending</option>
+                <option value="2">Ascending</option>
+            </select>
+            <br>
+           
+            
             <button type="submit" class="btn btn-default">Search</button>
             
         </form>

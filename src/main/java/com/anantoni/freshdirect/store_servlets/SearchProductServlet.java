@@ -43,9 +43,11 @@ public class SearchProductServlet extends HttpServlet {
         String product_description = request.getParameter("product_description");
         String product_category = request.getParameter("product_category");
         String supplier_name = request.getParameter("supplier_name");
+        String order_by = request.getParameter("order_by");
+        String ordering = request.getParameter("ordering");
         
         DatabaseManager dbManager = new DatabaseManager();
-        List<Product> productList = dbManager.searchProduct(product_name, product_description, product_category, supplier_name);
+        List<Product> productList = dbManager.searchProducts(product_name, product_description, product_category, supplier_name, order_by, ordering);
         
         request.setAttribute("productList", productList);
         RequestDispatcher rd = request.getRequestDispatcher(response.encodeURL("products.html"));

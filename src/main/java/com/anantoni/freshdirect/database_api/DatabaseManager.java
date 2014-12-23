@@ -637,10 +637,10 @@ public class DatabaseManager {
         return degree;
     }
     
-    public List<Product> searchProduct(String product_name, String product_description, String product_group_name, String supplier_name) throws SQLException {
+    public List<Product> searchProducts(String product_name, String product_description, String product_group_name, String supplier_name, String order_by, String ordering) throws SQLException {
         List<Product> productList = new ArrayList<>();
         
-        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.searchProducts(?, ?, ?, ?)}");
+        CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.searchProducts(?, ?, ?, ?, ?)}");
         if (product_name.equals(""))
             cs.setObject(1, null);
         else
@@ -660,6 +660,29 @@ public class DatabaseManager {
             cs.setString(4, null);
         else
             cs.setString(4, supplier_name);
+        
+        String order_choice = "";
+        switch (order_by) {
+            case "1":
+                order_choice += " ORDER BY p.list_price";
+                break;
+            case "2":
+                order_choice += " ORDER BY p.name";
+                break;
+            case "3":
+                order_choice += " ORDER BY s.supplier_name";
+                break;
+        }
+        
+        switch (ordering) {
+            case "1":
+                order_choice += " DESC";
+                break;
+            case "2":
+                order_choice += " ASC";
+                break;
+        }
+        cs.setString(5, order_choice);
         ResultSet rs = cs.executeQuery();
         
         while (rs.next()) {
