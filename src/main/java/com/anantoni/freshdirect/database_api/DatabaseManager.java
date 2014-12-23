@@ -859,6 +859,75 @@ public class DatabaseManager {
         
         return productList;
     }
+    
+    public List<Product> getProductsOnShortage() throws SQLException {
+        List<Product> productList = new ArrayList<>();
+        
+        PreparedStatement s = getSQLcon().prepareStatement(
+            "SELECT p.product_id AS product_id, p.name AS product_name, s.supplier_id, s.supplier_name, p.procurement_quantity" +
+            " FROM PRODUCTS AS p, SUPPLIERS AS s" +
+            " WHERE p.procurement_level_reached = 1" +
+            " AND p.product_id = s.product_id" );
+        ResultSet rs = s.executeQuery();
+        
+        int prevProductID = -1;
+        Product product = new Product();
+        while (rs.next()) {
+            if (prevProductID != rs.getInt("product_id")) {
+                product = new Product();
+                product.setProductID(rs.getInt("product_id"));
+                product.setName(rs.getString("product_name"));
+                product.setProcurementQuantity(rs.getInt("procurement_quantity"));
+                prevProductID = rs.getInt("product_id");
+                productList.add(product);
+            }
+            Supplier supplier = new Supplier();
+            supplier.setID(rs.getInt("supplier_id"));
+            supplier.setName(rs.getString("supplier_name"));
+            product.addSupplier(supplier);
+            
+        }
+        
+        return productList;
+    }
+    
+    public void reorder(String[] pIDs, String[] pQuantities, String[] pSuppliers) throws SQLException {
+        for (int i = 0; i < pIDs.length; i++) {
+            PreparedStatement s = getSQLcon().prepareStatement("SELECT available_quantity, procurement_level FROM PRODUCTS WHERE product_id = ?");
+            s.setInt(1, Integer.parseInt(pIDs[i]));
+            ResultSet rs = s.executeQuery();
+            
+            if (rs.next()) {
+                int currentQuantity = rs.getInt("available_quantity");
+                int procurementLevel = rs.getInt("procurement_level");
+                int orderQuantity = Integer.parseInt(pQuantities[i]);
+                
+                if (currentQuantity + orderQuantity <= procurementLevel) 
+                    s = getSQLcon().prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 1 WHERE product_id = ?");
+                else 
+                    s = getSQLcon().prepareStatement("UPDATE PRODUCTS SET available_quantity = ?, procurement_level_reached = 0 WHERE product_id = ?");
+                
+                s.setInt(1, currentQuantity + orderQuantity);
+                s.setInt(2, Integer.parseInt(pIDs[i]));
+                s.executeUpdate();
+                
+                s = getSQLcon().prepareStatement("SELECT supplied_quantity FROM SUPPLIERS WHERE supplier_id = ? AND product_id = ?");
+                s.setInt(1, Integer.parseInt(pSuppliers[i]));
+                s.setInt(2, Integer.parseInt(pIDs[i]));
+                rs = s.executeQuery();
+
+                if (rs.next()) {
+                    int suppliedQuantity = rs.getInt("supplied_quantity");
+                    s = getSQLcon().prepareStatement("UPDATE SUPPLIERS SET supplied_quantity = ? WHERE supplier_id = ? AND product_id = ?");
+                    s.setInt(1, suppliedQuantity + orderQuantity);
+                    s.setInt(2, Integer.parseInt(pSuppliers[i]));
+                    s.setInt(3, Integer.parseInt(pIDs[i]));
+                    s.executeUpdate();
+                }
+            }
+            
+        }
+    }
 
     /**
      * @return the SQLcon

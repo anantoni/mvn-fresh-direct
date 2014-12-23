@@ -41,6 +41,7 @@
                 <prop key="degree_of_separation.html">degreeOfSeparationController</prop>
                 <prop key="statistics_and_awards.html">statisticsAndAwardsController</prop>
                 <prop key="statistics_and_awards_results.html">statisticsAndAwardsResultsController</prop>
+                <prop key="products_on_shortage.html">productsOnShortageController</prop>
             </props>
         </property>
     </bean>
@@ -130,6 +131,10 @@
      <bean name="statisticsAndAwardsResultsController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="statistics_and_awards_results" />
+     
+     <bean name="productsOnShortageController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="products_on_shortage" />
     
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />

@@ -21,7 +21,7 @@
             <br>
             <label class="control-label" for="product_category"> Product Category: </label>
             <select name="product_category" id="inputProductCategory" class="form-control">
-                <option value="A">Any</option>
+                <option value="">Any</option>
                 <option value="V">Vegetable and Fruits</option>
                 <option value="M">Meat and Dairy Products</option>
                 <option value="C">Chemical Products</option>
@@ -35,8 +35,9 @@
             <c:if test="${sessionScope.userProfile != null}">
                 <label class="control-label" for="inputSupplier"> Supplier Name: </label>
                 <select name="supplier_name" id="inputSupplier" class="form-control">
+                    <option value="">Any</option>
                 <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
-                    <option value="<c:out value="${supplier.supplierID}"/>"><c:out value="${supplier.supplierName}"/></option>
+                    <option value="<c:out value="${supplier.ID}"/>"><c:out value="${supplier.name}"/></option>
                 </c:forEach>
                 </select>
                 

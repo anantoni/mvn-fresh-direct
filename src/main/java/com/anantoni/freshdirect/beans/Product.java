@@ -5,7 +5,9 @@
  */
 package com.anantoni.freshdirect.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -27,7 +29,12 @@ public class Product implements java.io.Serializable {
     private boolean procurementLevelReached;
     private Date date;
     private int orderQuantity;
+    private List<Supplier> supplierList;
 
+    public Product() {
+        supplierList = new ArrayList<>();
+    }
+    
     /**
      * @return the productID
      */
@@ -245,6 +252,23 @@ public class Product implements java.io.Serializable {
         this.orderQuantity = orderQuantity;
     }
     
+    public void addSupplier(Supplier supplier) {
+        this.getSupplierList().add(supplier);
+    }
+
+    /**
+     * @return the supplierList
+     */
+    public List<Supplier> getSupplierList() {
+        return supplierList;
+    }
+
+    /**
+     * @param supplierList the supplierList to set
+     */
+    public void setSupplierList(List<Supplier> supplierList) {
+        this.supplierList = supplierList;
+    }
     
     
     

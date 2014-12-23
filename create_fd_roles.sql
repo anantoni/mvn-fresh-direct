@@ -1,26 +1,28 @@
-create user 'manager'@'localhost' identified by '';
-create user 'customer'@'localhost' identified by '';
+USE fd_schema;
 
-grant select on fresh_direct.* to 'customer'@'localhost' identified by '';
-grant execute on fresh_direct.* to 'customer'@'localhost' identified by '';
+#CREATE USER 'manager'@'localhost' IDENTIFIER BY '1234';
+#CREATE USER 'customer'@'localhost' IDENTIFIER BY '1234';
 
-grant select, update, delete, insert on fresh_direct.* to 'manager'@'localhost' identified by '';
-grant execute on fresh_direct.* to 'manager'@'localhost' identified by '';
+GRANT SELECT ON fd_schema.* to 'customer'@'localhost' IDENTIFIED BY '1234';
+GRANT EXECUTE ON fd_schema.* to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.USERS to 'customer'@'localhost' identified by '';
+GRANT SELECT, UPDATE, DELETE, INSERT ON fd_schema.* to 'manager'@'localhost' IDENTIFIED BY '1234';
+GRANT EXECUTE ON fd_schema.* to 'manager'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.ADDRESSES to 'customer'@'localhost' identified by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.USERS to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.TOWNS to 'customer'@'localhost' identified by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.ADDRESSES to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.STREETS to 'customer'@'localhost' identified by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.TOWNS to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.ORDERS to 'customer'@'localhost' identified by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.STREETS to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.ORDER_DETAILS to 'customer'@'localhost' identified by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.ORDERS to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.ORDERED_WITH_CREDIT_CARD to 'customer'@'localhost' identifier by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.ORDER_DETAILS to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.CREDIT_CARDS to 'customer'@'localhost' identified by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.ORDERED_WITH_CREDIT_CARD to 'customer'@'localhost' IDENTIFIED BY '1234';
 
-grant update, delete, insert on fresh_direct.PRODUCTS to 'customer'@'localhost' identified by '';
+GRANT UPDATE, DELETE, INSERT ON fd_schema.CREDIT_CARDS to 'customer'@'localhost' IDENTIFIED BY '1234';
+
+GRANT UPDATE, DELETE, INSERT ON fd_schema.PRODUCTS to 'customer'@'localhost' IDENTIFIED BY '1234';
