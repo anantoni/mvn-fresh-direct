@@ -11,8 +11,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Products</title>
         <%@ include file="../layout/header.jsp" %>
-        Suggestions:
+        <div class="container-fluid" align="center">
+        <c:if test="${suggestionList!= null}">
+            <h1>Suggestions:</h1>
         <c:forEach var="product" items="${suggestionList}">
+        <div style="border: 2px solid; border-radius: 25px; padding: 10px" class="col-md-2">
             <c:out value="${product.name}"/> <br>
             <c:out value="${product.listPrice}"/> <br>
             <form action="AddToCartServlet" method="get">
@@ -20,15 +23,20 @@
                     <input type="hidden" name="product_name" value="<c:out value="${product.name}"/>">
                     <input type="hidden" name="product_id" value="<c:out value="${product.productID}"/>">
                     <input type="hidden" name="product_list_price" value="<c:out value="${product.listPrice}"/>">
-                    <input type="number" name="product_quantity" min="0" max="<c:out value="${product.availableQuantity}"/>" step="1">
-                    <button type="submit" class="btn btn-default">Add to Cart</button>
+                    <input type="number" class="form-control" name="product_quantity" min="0" max="<c:out value="${product.availableQuantity}"/>" step="1">
+                    <button type="submit" class="btn btn-success">Add to Cart</button>
+                    <br>
                 </c:if>
             </form>
+        </div>
         </c:forEach>
+        </c:if>
         <c:remove var="suggestionList"/> 
         
-        Products:
+        <c:if test="${productList!= null}">
+            <legend><h1>Products</h1></legend>
         <c:forEach var="product" items="${productList}">
+        <div style="border: 2px solid; border-radius: 25px; padding: 10px" class="col-md-2">    
             <c:out value="${product.name}"/> <br>
             <c:out value="${product.listPrice}"/> <br>
             <form action="AddToCartServlet" method="get">
@@ -36,11 +44,15 @@
                     <input type="hidden" name="product_name" value="<c:out value="${product.name}"/>">
                     <input type="hidden" name="product_id" value="<c:out value="${product.productID}"/>">
                     <input type="hidden" name="product_list_price" value="<c:out value="${product.listPrice}"/>">
-                    <input type="number" name="product_quantity" min="0" max="<c:out value="${product.availableQuantity}"/>" step="1">
-                    <button type="submit" class="btn btn-default">Add to Cart</button>
+                    <input type="number"class="form-control" name="product_quantity" min="0" max="<c:out value="${product.availableQuantity}"/>" step="1">
+                    <button type="submit" class="btn btn-success">Add to Cart</button>
+                    <br>
                 </c:if>
             </form>
+        </div>
         </c:forEach>
+        </c:if>
+        </div>
         <%@ include file="../layout/footer.jsp" %>
     </body>
 </html>

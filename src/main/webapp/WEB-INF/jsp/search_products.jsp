@@ -12,53 +12,79 @@
         <title>Product Search</title>
 
         <%@ include file="../layout/header.jsp" %>
-        <form class="form-inline" action="SearchProductServlet" method="get">
-            <label class="control-label" for="product_name"> Product Name: </label>
-            <input autofocus class="form-control"  type="search" name="product_name"/>
-            <br>
-            <label class="control-label" for="product_description"> Product Description: </label>
-            <input type="search" class="form-control" name="product_description"/>
-            <br>
-            <label class="control-label" for="product_category"> Product Category: </label>
-            <select name="product_category" id="inputProductCategory" class="form-control">
-                <option value="">Any</option>
-                <option value="V">Vegetable and Fruits</option>
-                <option value="M">Meat and Dairy Products</option>
-                <option value="C">Chemical Products</option>
-                <option value="I">Industrial Products</option>
-                <option value="B">Boxed/Canned Products</option>
-                <option value="G">Garden Products</option>
-                <option value="H">Household Products</option>
-            </select>
+        <div class="container-fluid" align="center">
+        <form class="form-horizontal" action="SearchProductServlet" method="get">
+            <fieldset>
+
+            <!-- Form Name -->
+            <legend>Search Products</legend>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="product_name"> Product Name: </label>
+                <div class="col-md-4">
+                    <input class="form-control input-md" type="search" name="product_name"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="product_description"> Product Description: </label>
+                <div class="col-md-4">
+                    <textarea class="form-control" name="product_description"/> </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="product_category"> Product Category: </label>
+                <div class="col-md-4">
+                <select name="product_category" id="inputProductCategory" class="form-control">
+                    <option value="">Any</option>
+                    <option value="V">Vegetable and Fruits</option>
+                    <option value="M">Meat and Dairy Products</option>
+                    <option value="C">Chemical Products</option>
+                    <option value="I">Industrial Products</option>
+                    <option value="B">Boxed/Canned Products</option>
+                    <option value="G">Garden Products</option>
+                    <option value="H">Household Products</option>
+                </select>
+                </div>
+            </div>
         
-            <br>
+           
             <c:if test="${sessionScope.userProfile != null}">
-                <label class="control-label" for="inputSupplier"> Supplier Name: </label>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="inputSupplier"> Supplier Name: </label>
+                <div class="col-md-4">
                 <select name="supplier_name" id="inputSupplier" class="form-control">
                     <option value="">Any</option>
-                <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
+                    <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
                     <option value="<c:out value="${supplier.ID}"/>"><c:out value="${supplier.name}"/></option>
-                </c:forEach>
+                    </c:forEach>
                 </select>
-                
+                </div>
+            </div>
             </c:if>
-            <br>
-            <label class="control-label" for="ordering"> Order by: </label>
-            <select name="order_by" id="inputSupplier" class="form-control">
-                <option value="1">Price</option>
-                <option value="2">Product Name</option>
-                <option value="3">Supplier Name</option>
-            </select>
-            <select name="ordering" id="inputSupplier" class="form-control">
-                <option value="1">Descending</option>
-                <option value="2">Ascending</option>
-            </select>
-            <br>
-           
+            <div class="form-group">    
+                <label class="col-md-4 control-label" for="order_by"> Order by: </label>
+                <div class="col-md-4">
+                <select name="order_by" id="inputSupplier" class="form-control">
+                    <option value="1">Price</option>
+                    <option value="2">Product Name</option>
+                    <option value="3">Supplier Name</option>
+                </select>
+                </div>
+            </div>
+            <div class="form-group">    
+                <label class="col-md-4 control-label" for="ordering"> Ordering: </label>
+                <div class="col-md-4">
+                <select name="ordering" id="inputSupplier" class="form-control">
+                    <option value="1">Descending</option>
+                    <option value="2">Ascending</option>
+                </select>
+                </div>
+            </div>           
             
-            <button type="submit" class="btn btn-default">Search</button>
-            
+            <button type="submit" class="btn btn-success">Search</button>
+            </fieldset>
         </form>
+        </div>
         <%@ include file="../layout/footer.jsp" %>
     </body>
 </html>

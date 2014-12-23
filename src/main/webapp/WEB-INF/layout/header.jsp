@@ -47,10 +47,11 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <c:out value="${sessionScope.userProfile.username}"/> <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="user_profile.html">Profile</a></li>
-            <li><a href="new_product.html">Register New Product</a></li>
-            <li><a href="arrival.html">Register Products Arrival</a></li>
-            <li><a href="ProductsOnShortageServlet">Products on Shortage</a></li>
-            <li><a href="statistics_and_awards.html">Statistics & Awards</a></li>
+            <c:if test= "${sessionScope.userProfile.role == 'manager'}">
+                <li><a href="new_product.html">Register New Product</a></li>
+                <li><a href="ProductsOnShortageServlet">Products on Shortage</a></li>
+                <li><a href="statistics_and_awards.html">Statistics & Awards</a></li>
+            </c:if>
             <li class="divider"></li>
             <li><a href="logout.html">Logout</a></li>
           </ul>
