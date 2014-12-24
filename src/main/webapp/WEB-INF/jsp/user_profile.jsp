@@ -13,15 +13,52 @@
         <title>User Profile</title>
         <%@ include file="../layout/header.jsp" %>
         <div class="container-fluid" align="center">
-        <c:if test="${sessionScope.userProfile!= null}">
-            Name: <c:out value="${userProfile.username}"/><br>
-            Email: <c:out value="${userProfile.email}" />
-            
-            
-            <c:forEach var="product" items="${userProfile.salesHistory}">
-                <fmt:formatDate type="date" value="${product.date}"/> <c:out value="${product.name}"/> <c:out value="${product.orderQuantity}"/><br>
-            </c:forEach>
-        </c:if>
+            <c:if test="${sessionScope.userProfile!= null}">            
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>Username:</td>
+                        <td><c:out value="${userProfile.username}"/></td>
+                      </tr>
+                      <tr>
+                        <td>Firstname:</td>
+                        <td><c:out value="${userProfile.firstname}"/></td>
+                      </tr>
+                      <tr>
+                        <td>Lastname:</td>
+                        <td><c:out value="${userProfile.lastname}"/></td>
+                      </tr>
+                      <tr>
+                        <td>Email:</td>
+                        <td><c:out value="${userProfile.email}"/></td>
+                      </tr>
+                      <tr>
+                        <td>Home Address:</td>
+                        <td><c:out value="${userProfile.street}"/> <c:out value="${userProfile.streetNumber}"/></td>
+                      </tr>
+                      <tr>
+                        <td>Post Code:</td>
+                        <td><c:out value="${userProfile.postCode}"/></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a href="shopping_cart.html" class="btn btn-primary">My Shopping Cart</a>
+                </div>
+                <div class=" col-md-9 col-lg-9" style="margin-top:10px;">
+                    <table class="table table-user-information">
+                        <tbody>    
+                        <c:forEach var="product" items="${userProfile.salesHistory}">
+                        <tr>
+                            <td><fmt:formatDate type="date" value="${product.date}"/></td>
+                            <td><c:out value="${product.name}"/> </td>
+                            <td><c:out value="${product.orderQuantity}"/></td>
+                        </tr>
+                        </c:forEach>
+                        </tbody>    
+                    </table>
+                </div>
+            </c:if>
         </div>
         
         <%@ include file="../layout/footer.jsp" %>        

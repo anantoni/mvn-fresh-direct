@@ -25,7 +25,7 @@
             <div class="form-group">
                 <label for="username" class="col-md-4 control-label"> Username: </label>
                 <div class="col-md-4">
-                    <input class="form-control input-md" autofocus="autofocus" autocomplete="off" maxlength="40" type="text"/>
+                    <input class="form-control input-md" name="username" autofocus="autofocus" autocomplete="off" maxlength="40" type="text"/>
                     <span class="help-block" id="registerUsernameError"></span>
                 </div>
             </div>
