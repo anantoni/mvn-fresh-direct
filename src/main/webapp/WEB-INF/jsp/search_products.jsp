@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label class="col-md-4 control-label" for="product_description"> Product Description: </label>
                 <div class="col-md-4">
-                    <textarea class="form-control" name="product_description"/> </textarea>
+                    <textarea class="form-control" name="product_description"/></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -55,7 +55,7 @@
                 <select name="supplier_name" id="inputSupplier" class="form-control">
                     <option value="">Any</option>
                     <c:forEach var="supplier" items="${sessionScope.userProfile.supplierList}">
-                    <option value="<c:out value="${supplier.ID}"/>"><c:out value="${supplier.name}"/></option>
+                    <option><c:out value="${supplier.name}"/></option>
                     </c:forEach>
                 </select>
                 </div>
