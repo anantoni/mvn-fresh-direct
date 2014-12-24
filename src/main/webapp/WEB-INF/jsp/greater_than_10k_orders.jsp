@@ -11,10 +11,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Days with greater than 10k orders</title>
         <%@ include file="../layout/header.jsp" %>
-        
+        <div class="container-fluid" align="center">
+            <legend><h1>Day with orders greater than 10000 &euro;</h1></legend>
         <c:forEach var="day" items="${dayList}">
-            <c:out value="${day}"/> <br>
+            <h3><c:out value="${day}"/> <br></h3>
         </c:forEach>
+        </div>
         <%@ include file="../layout/footer.jsp" %>
     </body>
 </html>

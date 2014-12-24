@@ -11,7 +11,7 @@
         <c:forEach var="product" items="${productList}">
         <div style="border: 2px solid; border-radius: 25px; padding: 10px" class="col-md-2">
             <c:out value="${product.name}"/> <br>
-            Price: <c:out value="${product.listPrice}"/> <br>
+            Price: <c:out value="${product.listPrice}"/>&euro;<br>
             Lowest Sum: <c:out value="${product.minOrderSum}"/> <br>
             Highest Sum: <c:out value="${product.maxOrderSum}"/> <br>
             <form action="AddToCartServlet" method="get">

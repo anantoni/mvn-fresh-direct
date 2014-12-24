@@ -19,7 +19,7 @@
                 <legend>Shopping Cart</legend>
                 <c:forEach var="entry" items="${sessionScope.shoppingCart.productMap}">
                     <c:out value="${entry.key.name}"/> <br>
-                    <c:out value="${entry.key.price} x ${entry.value} = ${entry.key.price * entry.value}"/> <br>
+                    <c:out value="${entry.key.price} x ${entry.value} = ${entry.key.price * entry.value}"/>&euro; <br>
                     <input type="hidden" name="product_names" value="<c:out value="${entry.key.name}"/>">
                     <input type="hidden" name="product_ids" value="<c:out value="${entry.key.productID}"/>">
                     <input type="hidden" name="product_list_prices" value="<c:out value="${entry.key.price}"/>">
