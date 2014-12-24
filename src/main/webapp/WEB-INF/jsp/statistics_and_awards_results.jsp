@@ -24,23 +24,56 @@
         </c:if>
         <c:if test="${supplierList != null}">        
             <legend><h1>Most Popular Suppliers</h1></legend>
-            <c:forEach var="supplier" items="${supplierList}">
-                <h4><c:out value="${supplier.name}"/></h4> <br>
-                <h4><c:out value="${supplier.totalAmountSupplied}"/></h4> <br>
-            </c:forEach>
+            <div class="col-md-6 col-lg-6 center-block" style="margin-top:10px;">
+                <table class="table table-user-information">
+                    <tbody> 
+                        <thead>
+                            <tr><td>Supplier Name</td><td>Total Amount Supplied</td></tr>
+                        </thead>
+                        <c:forEach var="supplier" items="${supplierList}">
+                            <tr>
+                                <td><c:out value="${supplier.name}"/></td>
+                                <td><c:out value="${supplier.totalAmountSupplied}"/></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>    
+                </table>
+            </div>      
         </c:if>
         <c:if test="${postCodeList != null}">
             <legend><h1>Most Popular Post Codes</h1></legend>
-            <c:forEach var="postCode" items="${postCodeList}">
-                <h4><c:out value="${postCode}"/></h4><br>
-            </c:forEach>
+            <div class="col-md-6 col-lg-6 center-block" style="margin-top:10px;">
+                <table class="table table-user-information">
+                    <tbody>
+                        <thead>
+                        <tr><td>Post Code</td></tr>
+                        </thead>
+                        <c:forEach var="postCode" items="${postCodeList}">
+                            <tr>
+                                <td><c:out value="${postCode}"/></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>    
+                </table>
+            </div>      
         </c:if>
         <c:if test="${clientList != null}">        
             <legend><h1>Top Clients</h1></legend>
-            <c:forEach var="client" items="${clientList}">
-                <h4><c:out value="${client.userID}"/></h4> <br>
-                <h4><c:out value="${client.username}"/></h4> <br>
-            </c:forEach>
+            <div class="col-md-6 col-lg-6 center-block" style="margin-top:10px;">
+                <table class="table table-user-information">
+                    <tbody>
+                    <thead>
+                    <tr><td>Client ID</td><td>Total Amount Spent</td></tr>
+                    </thead>
+                    <c:forEach var="client" items="${clientList}">
+                        <tr>
+                            <td><c:out value="${client.userID}"/></td>
+                            <td><c:out value="${client.totalAmountSpent}"/>&euro;</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>    
+                </table>
+            </div>     
         </c:if>
         </div>
         <%@ include file="../layout/footer.jsp" %>

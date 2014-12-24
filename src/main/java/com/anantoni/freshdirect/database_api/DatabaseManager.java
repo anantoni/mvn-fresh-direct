@@ -39,11 +39,20 @@ public class DatabaseManager {
     }
     
     public DatabaseManager(int connection_type) throws ClassNotFoundException, SQLException {
-        //Connect to sql server
-        Class.forName("com.mysql.jdbc.Driver");
-        String connectionUrl = "jdbc:mysql://localhost/mysql?" + "user=" + "root" + "&password=" + "BlackCat13";
-        Connection con = DriverManager.getConnection(connectionUrl);
-        SQLcon = con;
+        if (connection_type == 1) {
+            //Connect to sql server
+            Class.forName("com.mysql.jdbc.Driver");
+            String connectionUrl = "jdbc:mysql://localhost/fd_schema?" + "user=" + "manager" + "&password=" + "1234";
+            Connection con = DriverManager.getConnection(connectionUrl);
+            SQLcon = con;
+        }
+        else {
+            //Connect to sql server
+            Class.forName("com.mysql.jdbc.Driver");
+            String connectionUrl = "jdbc:mysql://localhost/fd_schema?" + "user=" + "customer" + "&password=" + "1234";
+            Connection con = DriverManager.getConnection(connectionUrl);
+            SQLcon = con;
+        }
         SQLcon.createStatement().execute("USE fd_schema;");
     }
 
@@ -117,6 +126,7 @@ public class DatabaseManager {
             String lastname, String town, String street, String streetNumber, String postCode) 
             throws SQLException 
     {
+        
         //Check if town exists in TOWN
         PreparedStatement s = getSQLcon().prepareStatement("SELECT town_id FROM TOWNS WHERE town_name = ?");
         
@@ -219,6 +229,16 @@ public class DatabaseManager {
                 s.close();
             }
         }
+        
+//        s = getSQLcon().prepareStatement("SELECT * FROM USERS WHERE login_name = ?");
+//        s.setString(1, username);
+//        rs = s.executeQuery();
+//        
+//        if (rs.next()) {
+//            rs.close();
+//            s.close();
+//            return -1;
+//        }
         
         //Insert user to USER table
         s = getSQLcon().prepareStatement("INSERT INTO USERS("
@@ -577,8 +597,8 @@ public class DatabaseManager {
         return productList;
     }
     
-    public List<Integer> daysGreaterThan10k(String month, String year) throws SQLException {
-        List<Integer> dayList = new ArrayList<>();
+    public List<String> daysGreaterThan10k(String month, String year) throws SQLException {
+        List<String> dayList = new ArrayList<>();
         
         CallableStatement cs = getSQLcon().prepareCall("{call fd_schema.daysGreaterThan10k(?, ?)}");
         cs.setInt(1, Integer.parseInt(month));
@@ -586,7 +606,7 @@ public class DatabaseManager {
         ResultSet rs = cs.executeQuery();
 
         while (rs.next()) 
-            dayList.add(rs.getInt("found_day"));
+            dayList.add(String.valueOf(rs.getInt("found_day")) + "-" + month + "-" + year);
         
         rs.close();
         cs.close();

@@ -43,7 +43,7 @@ public class GreaterThan10KServlet extends HttpServlet {
         String date = request.getParameter("date");
         String[] monthOfYear = date.split("/");
         DatabaseManager dbManager = new DatabaseManager();
-        List<Integer> dayList = dbManager.daysGreaterThan10k(monthOfYear[0], monthOfYear[1]);
+        List<String> dayList = dbManager.daysGreaterThan10k(monthOfYear[0], monthOfYear[1]);
         request.setAttribute("dayList", dayList);
         
         RequestDispatcher rd = request.getRequestDispatcher(response.encodeURL("greater_than_10k_orders.html"));

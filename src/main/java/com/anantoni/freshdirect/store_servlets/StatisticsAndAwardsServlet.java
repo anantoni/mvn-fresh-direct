@@ -46,7 +46,7 @@ public class StatisticsAndAwardsServlet extends HttpServlet {
             String mostPopularPostCodesLimit = request.getParameter("popularPostCodesLimit");
             String topClientsLimit = request.getParameter("topClientsLimit");
             
-            DatabaseManager dbManager = new DatabaseManager(1);
+            DatabaseManager dbManager = new DatabaseManager();
             if (mostPopularProductsLimit != null && !mostPopularProductsLimit.equals("")) {
                 int limit = Integer.parseInt(mostPopularProductsLimit);
                 List<Product> productList = dbManager.mostPopularProducts(limit);

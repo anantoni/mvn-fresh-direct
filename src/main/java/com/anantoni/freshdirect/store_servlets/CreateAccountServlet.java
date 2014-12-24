@@ -129,7 +129,7 @@ public class CreateAccountServlet extends HttpServlet {
 
                         session.setAttribute("username", username);
                         session.setAttribute("user_id", id);
-                        String redirectURL = response.encodeRedirectURL("create_profile.html?user_id=" + id);
+                        String redirectURL = response.encodeRedirectURL("user_profile.html");
                         response.sendRedirect(redirectURL);
                     } 
                     else {

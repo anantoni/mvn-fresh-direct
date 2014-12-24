@@ -26,7 +26,7 @@
                 <label for="username" class="col-md-4 control-label"> Username: </label>
                 <div class="col-md-4">
                     <input class="form-control input-md" name="username" autofocus="autofocus" autocomplete="off" maxlength="40" type="text"/>
-                    <span class="help-block" id="registerUsernameError"></span>
+                    <span class="help-block" id="registerUsernameError"><c:out value="${error}"/></span>
                 </div>
             </div>
             <div class="form-group">

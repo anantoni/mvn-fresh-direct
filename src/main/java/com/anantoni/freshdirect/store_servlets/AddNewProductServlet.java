@@ -58,9 +58,10 @@ public class AddNewProductServlet extends HttpServlet {
             
             
             DatabaseManager dbManager = new DatabaseManager();
-            out.println(supplierID);
             if (dbManager.insertNewProduct(product, supplierID) == false)
                 out.println("error");
+            String redirectURL = response.encodeRedirectURL("new_product.html");
+            response.sendRedirect(redirectURL);
         }
     }
 
