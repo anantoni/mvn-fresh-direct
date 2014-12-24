@@ -17,7 +17,7 @@
             <c:forEach var="product" items="${productList}">
             <div style="border: 2px solid; border-radius: 25px; padding: 10px" class="col-md-2">
                 <c:out value="${product.name}"/> <br>
-                <c:out value="${product.listPrice}"/>&euro<br>
+                <c:out value="${product.listPrice}"/>&euro;<br>
                 <c:if test="${sessionScope.userProfile!= null}">
                     <form action="AddToCartServlet" method="get">
                         <input type="hidden" name="product_name" value="<c:out value="${product.name}"/>">
